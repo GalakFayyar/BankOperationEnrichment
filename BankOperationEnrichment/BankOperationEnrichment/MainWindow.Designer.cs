@@ -46,18 +46,25 @@
             this.rbTab = new System.Windows.Forms.RadioButton();
             this.rbColon = new System.Windows.Forms.RadioButton();
             this.groupDelimiter = new System.Windows.Forms.GroupBox();
-            this.rbSemiColon = new System.Windows.Forms.RadioButton();
-            this.rbSpace = new System.Windows.Forms.RadioButton();
-            this.rbNone = new System.Windows.Forms.RadioButton();
             this.lblExplNone = new System.Windows.Forms.Label();
+            this.rbNone = new System.Windows.Forms.RadioButton();
+            this.rbSpace = new System.Windows.Forms.RadioButton();
+            this.rbSemiColon = new System.Windows.Forms.RadioButton();
+            this.cbSheetName = new System.Windows.Forms.ComboBox();
+            this.lblSheetName = new System.Windows.Forms.Label();
+            this.gpFileType = new System.Windows.Forms.GroupBox();
+            this.rbSourceCA = new System.Windows.Forms.RadioButton();
+            this.rbSourceCM = new System.Windows.Forms.RadioButton();
+            this.rbSourceAutre = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             this.groupDelimiter.SuspendLayout();
+            this.gpFileType.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(385, 189);
+            this.btnCancel.Location = new System.Drawing.Point(385, 272);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 0;
@@ -78,7 +85,7 @@
             // btnExecute
             // 
             this.btnExecute.Enabled = false;
-            this.btnExecute.Location = new System.Drawing.Point(304, 189);
+            this.btnExecute.Location = new System.Drawing.Point(304, 272);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(75, 23);
             this.btnExecute.TabIndex = 2;
@@ -101,7 +108,7 @@
             this.lblVersion.AutoSize = true;
             this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVersion.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.lblVersion.Location = new System.Drawing.Point(12, 195);
+            this.lblVersion.Location = new System.Drawing.Point(12, 278);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(42, 13);
             this.lblVersion.TabIndex = 4;
@@ -109,7 +116,7 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(12, 148);
+            this.progressBar.Location = new System.Drawing.Point(12, 231);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(448, 23);
             this.progressBar.TabIndex = 5;
@@ -167,7 +174,7 @@
             // txtRefFilePath
             // 
             this.txtRefFilePath.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.txtRefFilePath.Location = new System.Drawing.Point(109, 55);
+            this.txtRefFilePath.Location = new System.Drawing.Point(109, 87);
             this.txtRefFilePath.Name = "txtRefFilePath";
             this.txtRefFilePath.ReadOnly = true;
             this.txtRefFilePath.Size = new System.Drawing.Size(351, 20);
@@ -176,7 +183,7 @@
             // lblRefFile
             // 
             this.lblRefFile.AutoSize = true;
-            this.lblRefFile.Location = new System.Drawing.Point(12, 58);
+            this.lblRefFile.Location = new System.Drawing.Point(12, 90);
             this.lblRefFile.Name = "lblRefFile";
             this.lblRefFile.Size = new System.Drawing.Size(91, 13);
             this.lblRefFile.TabIndex = 8;
@@ -212,42 +219,12 @@
             this.groupDelimiter.Controls.Add(this.rbSemiColon);
             this.groupDelimiter.Controls.Add(this.rbTab);
             this.groupDelimiter.Controls.Add(this.rbColon);
-            this.groupDelimiter.Location = new System.Drawing.Point(15, 90);
+            this.groupDelimiter.Location = new System.Drawing.Point(15, 173);
             this.groupDelimiter.Name = "groupDelimiter";
             this.groupDelimiter.Size = new System.Drawing.Size(445, 52);
             this.groupDelimiter.TabIndex = 12;
             this.groupDelimiter.TabStop = false;
             this.groupDelimiter.Text = "Type de Séparateur";
-            // 
-            // rbSemiColon
-            // 
-            this.rbSemiColon.AutoSize = true;
-            this.rbSemiColon.Location = new System.Drawing.Point(150, 19);
-            this.rbSemiColon.Name = "rbSemiColon";
-            this.rbSemiColon.Size = new System.Drawing.Size(84, 17);
-            this.rbSemiColon.TabIndex = 12;
-            this.rbSemiColon.Text = "Point Virgule";
-            this.rbSemiColon.UseVisualStyleBackColor = true;
-            // 
-            // rbSpace
-            // 
-            this.rbSpace.AutoSize = true;
-            this.rbSpace.Location = new System.Drawing.Point(241, 20);
-            this.rbSpace.Name = "rbSpace";
-            this.rbSpace.Size = new System.Drawing.Size(61, 17);
-            this.rbSpace.TabIndex = 13;
-            this.rbSpace.Text = "Espace";
-            this.rbSpace.UseVisualStyleBackColor = true;
-            // 
-            // rbNone
-            // 
-            this.rbNone.AutoSize = true;
-            this.rbNone.Location = new System.Drawing.Point(309, 20);
-            this.rbNone.Name = "rbNone";
-            this.rbNone.Size = new System.Drawing.Size(56, 17);
-            this.rbNone.TabIndex = 14;
-            this.rbNone.Text = "Aucun";
-            this.rbNone.UseVisualStyleBackColor = true;
             // 
             // lblExplNone
             // 
@@ -259,12 +236,108 @@
             this.lblExplNone.TabIndex = 15;
             this.lblExplNone.Text = "(taille colonne fixe)";
             // 
+            // rbNone
+            // 
+            this.rbNone.AutoSize = true;
+            this.rbNone.Location = new System.Drawing.Point(309, 20);
+            this.rbNone.Name = "rbNone";
+            this.rbNone.Size = new System.Drawing.Size(56, 17);
+            this.rbNone.TabIndex = 14;
+            this.rbNone.Text = "Aucun";
+            this.rbNone.UseVisualStyleBackColor = true;
+            // 
+            // rbSpace
+            // 
+            this.rbSpace.AutoSize = true;
+            this.rbSpace.Location = new System.Drawing.Point(241, 20);
+            this.rbSpace.Name = "rbSpace";
+            this.rbSpace.Size = new System.Drawing.Size(61, 17);
+            this.rbSpace.TabIndex = 13;
+            this.rbSpace.Text = "Espace";
+            this.rbSpace.UseVisualStyleBackColor = true;
+            // 
+            // rbSemiColon
+            // 
+            this.rbSemiColon.AutoSize = true;
+            this.rbSemiColon.Location = new System.Drawing.Point(150, 19);
+            this.rbSemiColon.Name = "rbSemiColon";
+            this.rbSemiColon.Size = new System.Drawing.Size(84, 17);
+            this.rbSemiColon.TabIndex = 12;
+            this.rbSemiColon.Text = "Point Virgule";
+            this.rbSemiColon.UseVisualStyleBackColor = true;
+            // 
+            // cbSheetName
+            // 
+            this.cbSheetName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSheetName.Enabled = false;
+            this.cbSheetName.FormattingEnabled = true;
+            this.cbSheetName.Location = new System.Drawing.Point(109, 60);
+            this.cbSheetName.Name = "cbSheetName";
+            this.cbSheetName.Size = new System.Drawing.Size(351, 21);
+            this.cbSheetName.TabIndex = 13;
+            // 
+            // lblSheetName
+            // 
+            this.lblSheetName.AutoSize = true;
+            this.lblSheetName.Location = new System.Drawing.Point(12, 63);
+            this.lblSheetName.Name = "lblSheetName";
+            this.lblSheetName.Size = new System.Drawing.Size(79, 13);
+            this.lblSheetName.TabIndex = 14;
+            this.lblSheetName.Text = "Feuille classeur";
+            // 
+            // gpFileType
+            // 
+            this.gpFileType.Controls.Add(this.rbSourceAutre);
+            this.gpFileType.Controls.Add(this.rbSourceCM);
+            this.gpFileType.Controls.Add(this.rbSourceCA);
+            this.gpFileType.Location = new System.Drawing.Point(15, 117);
+            this.gpFileType.Name = "gpFileType";
+            this.gpFileType.Size = new System.Drawing.Size(439, 50);
+            this.gpFileType.TabIndex = 15;
+            this.gpFileType.TabStop = false;
+            this.gpFileType.Text = "Source";
+            // 
+            // rbSourceCA
+            // 
+            this.rbSourceCA.AutoSize = true;
+            this.rbSourceCA.Checked = true;
+            this.rbSourceCA.Location = new System.Drawing.Point(6, 19);
+            this.rbSourceCA.Name = "rbSourceCA";
+            this.rbSourceCA.Size = new System.Drawing.Size(93, 17);
+            this.rbSourceCA.TabIndex = 0;
+            this.rbSourceCA.TabStop = true;
+            this.rbSourceCA.Text = "Crédit Agricole";
+            this.rbSourceCA.UseVisualStyleBackColor = true;
+            // 
+            // rbSourceCM
+            // 
+            this.rbSourceCM.AutoSize = true;
+            this.rbSourceCM.Location = new System.Drawing.Point(105, 19);
+            this.rbSourceCM.Name = "rbSourceCM";
+            this.rbSourceCM.Size = new System.Drawing.Size(87, 17);
+            this.rbSourceCM.TabIndex = 1;
+            this.rbSourceCM.Text = "Crédit Mutuel";
+            this.rbSourceCM.UseVisualStyleBackColor = true;
+            // 
+            // rbSourceAutre
+            // 
+            this.rbSourceAutre.AutoSize = true;
+            this.rbSourceAutre.Location = new System.Drawing.Point(198, 19);
+            this.rbSourceAutre.Name = "rbSourceAutre";
+            this.rbSourceAutre.Size = new System.Drawing.Size(59, 17);
+            this.rbSourceAutre.TabIndex = 2;
+            this.rbSourceAutre.Text = "Autre...";
+            this.rbSourceAutre.UseVisualStyleBackColor = true;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(472, 225);
+            this.ClientSize = new System.Drawing.Size(472, 310);
+            this.Controls.Add(this.gpFileType);
+            this.Controls.Add(this.lblSheetName);
+            this.Controls.Add(this.cbSheetName);
             this.Controls.Add(this.groupDelimiter);
             this.Controls.Add(this.lblRefFile);
             this.Controls.Add(this.txtRefFilePath);
@@ -288,6 +361,8 @@
             this.menuStrip1.PerformLayout();
             this.groupDelimiter.ResumeLayout(false);
             this.groupDelimiter.PerformLayout();
+            this.gpFileType.ResumeLayout(false);
+            this.gpFileType.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -317,6 +392,12 @@
         private System.Windows.Forms.RadioButton rbNone;
         private System.Windows.Forms.RadioButton rbSpace;
         private System.Windows.Forms.RadioButton rbSemiColon;
+        private System.Windows.Forms.ComboBox cbSheetName;
+        private System.Windows.Forms.Label lblSheetName;
+        private System.Windows.Forms.GroupBox gpFileType;
+        private System.Windows.Forms.RadioButton rbSourceAutre;
+        private System.Windows.Forms.RadioButton rbSourceCM;
+        private System.Windows.Forms.RadioButton rbSourceCA;
     }
 }
 

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using EmbeddedExcel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Reflection;
 using System.Windows.Forms;
+using Microsoft.Win32;
 //using Excel = Microsoft.Office.Interop.Excel;
 
 namespace BankOperationEnrichment
@@ -15,6 +17,11 @@ namespace BankOperationEnrichment
         public string excelFiledelimiter;
         public HashSet<Data> arrayData;
         public List<string> listSheets;
+        public string strRegPathExcel8 = @"HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Excel.Sheet.8";
+        public string strRegPathExcel12 = @"HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Excel.Sheet.12";
+        public string keyExcelAccess = "BrowserFlags";
+        public object oldValueExcel8 = null;
+        public object oldValueExcel12 = null;
 
         public MainWindow()
         {
@@ -26,6 +33,7 @@ namespace BankOperationEnrichment
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+            ResetRegistryKeysForNavigator();
             MainWindow.ActiveForm.Dispose();
         }
 
@@ -72,6 +80,9 @@ namespace BankOperationEnrichment
         private void btnExecute_Click(object sender, EventArgs e)
         {
             HashSet<Data> arrayData = new HashSet<Data>();
+
+            // Read Reference Excel File
+
 
             // Read Excel File depending Source File
             ReadExcelFile(fileToOperate, cbSheetName.SelectedItem.ToString());
@@ -165,12 +176,55 @@ namespace BankOperationEnrichment
 
         public void OperateOtherExcelFile(DataTable dataTable)
         {
-            List<string> toto = new List<string>();
-            toto.Add("momo");
-            toto.Add("mama");
-            toto.Add("mimi");
-            PreviewFile preview = new PreviewFile(toto);
-            preview.Show();
+            UpdateRegistryKeysForNavigator();
+
+            ExcelPreview preview = new ExcelPreview(fileToOperate);
+            preview.ShowDialog();
+
+            Dictionary<string, int> mappingColumns = preview.mappingColumns;
+            int startIndex = preview.startLineNumber;
+
+            //foreach (DataRow excelLine in dataTable.Rows)
+            //{
+            for (int i = startIndex; i < dataTable.Rows.Count; i++)
+            {
+                arrayData.Add(new Data()
+                {
+                    Date = dataTable.Rows[i].ItemArray[mappingColumns["date"]] != DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i].ItemArray[mappingColumns["date"]]) : new DateTime(),
+                    Libelle = dataTable.Rows[i].ItemArray[mappingColumns["libelle"]] != DBNull.Value ? dataTable.Rows[i].ItemArray[mappingColumns["libelle"]].ToString() : string.Empty,
+                    Depense = dataTable.Rows[i].ItemArray[mappingColumns["depense"]] != DBNull.Value ? Convert.ToDouble(dataTable.Rows[i].ItemArray[mappingColumns["depense"]]) : 0,
+                    Recettes = dataTable.Rows[i].ItemArray[mappingColumns["recette"]] != DBNull.Value ? Convert.ToDouble(dataTable.Rows[i].ItemArray[mappingColumns["recette"]]) : 0
+                });
+            }
+        }
+
+        private bool TestIfKeyExists(string regPath, string valueName)
+        {
+            return (Registry.GetValue(regPath, valueName, null) != null);
+        }
+
+        private void UpdateRegistryKeysForNavigator()
+        {
+            if (TestIfKeyExists(strRegPathExcel8, keyExcelAccess))
+            {
+                oldValueExcel8 = Registry.GetValue(strRegPathExcel8, keyExcelAccess, null);
+                Registry.SetValue(strRegPathExcel8, keyExcelAccess, "80000A00");
+            }
+
+            if (TestIfKeyExists(strRegPathExcel12, keyExcelAccess))
+            {
+                oldValueExcel12 = Registry.GetValue(strRegPathExcel12, keyExcelAccess, null);
+                Registry.SetValue(strRegPathExcel12, keyExcelAccess, "80000A00");
+            }
+        }
+
+        private void ResetRegistryKeysForNavigator()
+        {
+            if (TestIfKeyExists(strRegPathExcel8, keyExcelAccess) && oldValueExcel8 != null)
+                Registry.SetValue(strRegPathExcel8, keyExcelAccess, oldValueExcel8);
+
+            if (TestIfKeyExists(strRegPathExcel12, keyExcelAccess) && oldValueExcel12 != null)
+                Registry.SetValue(strRegPathExcel12, keyExcelAccess, oldValueExcel12);
         }
 
         private void OperateCMExcelFile(DataTable dataTable)

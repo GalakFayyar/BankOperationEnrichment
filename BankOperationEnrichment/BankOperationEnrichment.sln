@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankOperationEnrichment", "BankOperationEnrichment\BankOperationEnrichment.csproj", "{1F3E6485-5080-4F73-8F27-C3C34F55FB2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbeddedExcel", "Embedding_Excel\EmbeddedExcel.csproj", "{F1460A86-400B-427E-9DFF-0AB53D9A9623}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{1F3E6485-5080-4F73-8F27-C3C34F55FB2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F3E6485-5080-4F73-8F27-C3C34F55FB2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F3E6485-5080-4F73-8F27-C3C34F55FB2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1460A86-400B-427E-9DFF-0AB53D9A9623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1460A86-400B-427E-9DFF-0AB53D9A9623}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1460A86-400B-427E-9DFF-0AB53D9A9623}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1460A86-400B-427E-9DFF-0AB53D9A9623}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

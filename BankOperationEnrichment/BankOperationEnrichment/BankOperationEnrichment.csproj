@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountReference.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>

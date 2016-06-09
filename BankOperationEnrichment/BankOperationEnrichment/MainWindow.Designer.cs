@@ -42,7 +42,6 @@
             this.menuBtnExit = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.txtRefFilePath = new System.Windows.Forms.TextBox();
-            this.lblRefFile = new System.Windows.Forms.Label();
             this.rbTab = new System.Windows.Forms.RadioButton();
             this.rbColon = new System.Windows.Forms.RadioButton();
             this.groupDelimiter = new System.Windows.Forms.GroupBox();
@@ -53,18 +52,25 @@
             this.cbSheetName = new System.Windows.Forms.ComboBox();
             this.lblSheetName = new System.Windows.Forms.Label();
             this.gpFileType = new System.Windows.Forms.GroupBox();
-            this.rbSourceCA = new System.Windows.Forms.RadioButton();
-            this.rbSourceCM = new System.Windows.Forms.RadioButton();
             this.rbSourceAutre = new System.Windows.Forms.RadioButton();
+            this.rbSourceCM = new System.Windows.Forms.RadioButton();
+            this.rbSourceCA = new System.Windows.Forms.RadioButton();
+            this.gpSourceFile = new System.Windows.Forms.GroupBox();
+            this.gpReference = new System.Windows.Forms.GroupBox();
+            this.cbRefSheetName = new System.Windows.Forms.ComboBox();
+            this.btnRefFilePath = new System.Windows.Forms.Button();
+            this.lblRefFileSheet = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.groupDelimiter.SuspendLayout();
             this.gpFileType.SuspendLayout();
+            this.gpSourceFile.SuspendLayout();
+            this.gpReference.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(385, 272);
+            this.btnCancel.Location = new System.Drawing.Point(382, 357);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 0;
@@ -74,7 +80,7 @@
             // 
             // btnFilePath
             // 
-            this.btnFilePath.Location = new System.Drawing.Point(385, 27);
+            this.btnFilePath.Location = new System.Drawing.Point(360, 17);
             this.btnFilePath.Name = "btnFilePath";
             this.btnFilePath.Size = new System.Drawing.Size(75, 23);
             this.btnFilePath.TabIndex = 1;
@@ -85,7 +91,7 @@
             // btnExecute
             // 
             this.btnExecute.Enabled = false;
-            this.btnExecute.Location = new System.Drawing.Point(304, 272);
+            this.btnExecute.Location = new System.Drawing.Point(301, 357);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(75, 23);
             this.btnExecute.TabIndex = 2;
@@ -97,18 +103,18 @@
             // 
             this.txtFilePath.BackColor = System.Drawing.SystemColors.InactiveBorder;
             this.txtFilePath.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.txtFilePath.Location = new System.Drawing.Point(12, 29);
+            this.txtFilePath.Location = new System.Drawing.Point(6, 19);
             this.txtFilePath.Name = "txtFilePath";
-            this.txtFilePath.Size = new System.Drawing.Size(367, 20);
+            this.txtFilePath.Size = new System.Drawing.Size(348, 20);
             this.txtFilePath.TabIndex = 3;
-            this.txtFilePath.Text = "Sélectionner un fichier ...";
+            this.txtFilePath.Text = "Sélectionner un fichier à enrichir ...";
             // 
             // lblVersion
             // 
             this.lblVersion.AutoSize = true;
             this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVersion.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.lblVersion.Location = new System.Drawing.Point(12, 278);
+            this.lblVersion.Location = new System.Drawing.Point(9, 363);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(42, 13);
             this.lblVersion.TabIndex = 4;
@@ -116,7 +122,7 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(12, 231);
+            this.progressBar.Location = new System.Drawing.Point(9, 316);
             this.progressBar.Name = "progressBar";
             this.progressBar.Size = new System.Drawing.Size(448, 23);
             this.progressBar.TabIndex = 5;
@@ -154,7 +160,6 @@
             this.menuBtnSetRefCode.Name = "menuBtnSetRefCode";
             this.menuBtnSetRefCode.Size = new System.Drawing.Size(200, 22);
             this.menuBtnSetRefCode.Text = "Codes de Références";
-            this.menuBtnSetRefCode.Click += new System.EventHandler(this.menuBtnSetRefCode_Click);
             // 
             // menuBtnHelp
             // 
@@ -174,20 +179,13 @@
             // txtRefFilePath
             // 
             this.txtRefFilePath.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.txtRefFilePath.Location = new System.Drawing.Point(109, 87);
+            this.txtRefFilePath.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.txtRefFilePath.Location = new System.Drawing.Point(6, 19);
             this.txtRefFilePath.Name = "txtRefFilePath";
             this.txtRefFilePath.ReadOnly = true;
-            this.txtRefFilePath.Size = new System.Drawing.Size(351, 20);
+            this.txtRefFilePath.Size = new System.Drawing.Size(348, 20);
             this.txtRefFilePath.TabIndex = 7;
-            // 
-            // lblRefFile
-            // 
-            this.lblRefFile.AutoSize = true;
-            this.lblRefFile.Location = new System.Drawing.Point(12, 90);
-            this.lblRefFile.Name = "lblRefFile";
-            this.lblRefFile.Size = new System.Drawing.Size(91, 13);
-            this.lblRefFile.TabIndex = 8;
-            this.lblRefFile.Text = "Fichier Référénce";
+            this.txtRefFilePath.Text = "Sélectionner un fichier référence ...";
             // 
             // rbTab
             // 
@@ -219,7 +217,7 @@
             this.groupDelimiter.Controls.Add(this.rbSemiColon);
             this.groupDelimiter.Controls.Add(this.rbTab);
             this.groupDelimiter.Controls.Add(this.rbColon);
-            this.groupDelimiter.Location = new System.Drawing.Point(15, 173);
+            this.groupDelimiter.Location = new System.Drawing.Point(12, 258);
             this.groupDelimiter.Name = "groupDelimiter";
             this.groupDelimiter.Size = new System.Drawing.Size(445, 52);
             this.groupDelimiter.TabIndex = 12;
@@ -271,15 +269,15 @@
             this.cbSheetName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbSheetName.Enabled = false;
             this.cbSheetName.FormattingEnabled = true;
-            this.cbSheetName.Location = new System.Drawing.Point(109, 60);
+            this.cbSheetName.Location = new System.Drawing.Point(97, 46);
             this.cbSheetName.Name = "cbSheetName";
-            this.cbSheetName.Size = new System.Drawing.Size(351, 21);
+            this.cbSheetName.Size = new System.Drawing.Size(338, 21);
             this.cbSheetName.TabIndex = 13;
             // 
             // lblSheetName
             // 
             this.lblSheetName.AutoSize = true;
-            this.lblSheetName.Location = new System.Drawing.Point(12, 63);
+            this.lblSheetName.Location = new System.Drawing.Point(6, 49);
             this.lblSheetName.Name = "lblSheetName";
             this.lblSheetName.Size = new System.Drawing.Size(79, 13);
             this.lblSheetName.TabIndex = 14;
@@ -290,12 +288,32 @@
             this.gpFileType.Controls.Add(this.rbSourceAutre);
             this.gpFileType.Controls.Add(this.rbSourceCM);
             this.gpFileType.Controls.Add(this.rbSourceCA);
-            this.gpFileType.Location = new System.Drawing.Point(15, 117);
+            this.gpFileType.Location = new System.Drawing.Point(12, 202);
             this.gpFileType.Name = "gpFileType";
-            this.gpFileType.Size = new System.Drawing.Size(439, 50);
+            this.gpFileType.Size = new System.Drawing.Size(445, 50);
             this.gpFileType.TabIndex = 15;
             this.gpFileType.TabStop = false;
             this.gpFileType.Text = "Source";
+            // 
+            // rbSourceAutre
+            // 
+            this.rbSourceAutre.AutoSize = true;
+            this.rbSourceAutre.Location = new System.Drawing.Point(198, 19);
+            this.rbSourceAutre.Name = "rbSourceAutre";
+            this.rbSourceAutre.Size = new System.Drawing.Size(59, 17);
+            this.rbSourceAutre.TabIndex = 2;
+            this.rbSourceAutre.Text = "Autre...";
+            this.rbSourceAutre.UseVisualStyleBackColor = true;
+            // 
+            // rbSourceCM
+            // 
+            this.rbSourceCM.AutoSize = true;
+            this.rbSourceCM.Location = new System.Drawing.Point(105, 19);
+            this.rbSourceCM.Name = "rbSourceCM";
+            this.rbSourceCM.Size = new System.Drawing.Size(87, 17);
+            this.rbSourceCM.TabIndex = 1;
+            this.rbSourceCM.Text = "Crédit Mutuel";
+            this.rbSourceCM.UseVisualStyleBackColor = true;
             // 
             // rbSourceCA
             // 
@@ -309,43 +327,74 @@
             this.rbSourceCA.Text = "Crédit Agricole";
             this.rbSourceCA.UseVisualStyleBackColor = true;
             // 
-            // rbSourceCM
+            // gpSourceFile
             // 
-            this.rbSourceCM.AutoSize = true;
-            this.rbSourceCM.Location = new System.Drawing.Point(105, 19);
-            this.rbSourceCM.Name = "rbSourceCM";
-            this.rbSourceCM.Size = new System.Drawing.Size(87, 17);
-            this.rbSourceCM.TabIndex = 1;
-            this.rbSourceCM.Text = "Crédit Mutuel";
-            this.rbSourceCM.UseVisualStyleBackColor = true;
+            this.gpSourceFile.Controls.Add(this.lblSheetName);
+            this.gpSourceFile.Controls.Add(this.btnFilePath);
+            this.gpSourceFile.Controls.Add(this.cbSheetName);
+            this.gpSourceFile.Controls.Add(this.txtFilePath);
+            this.gpSourceFile.Location = new System.Drawing.Point(12, 27);
+            this.gpSourceFile.Name = "gpSourceFile";
+            this.gpSourceFile.Size = new System.Drawing.Size(445, 79);
+            this.gpSourceFile.TabIndex = 16;
+            this.gpSourceFile.TabStop = false;
+            this.gpSourceFile.Text = "Fichier à enrichir";
             // 
-            // rbSourceAutre
+            // gpReference
             // 
-            this.rbSourceAutre.AutoSize = true;
-            this.rbSourceAutre.Location = new System.Drawing.Point(198, 19);
-            this.rbSourceAutre.Name = "rbSourceAutre";
-            this.rbSourceAutre.Size = new System.Drawing.Size(59, 17);
-            this.rbSourceAutre.TabIndex = 2;
-            this.rbSourceAutre.Text = "Autre...";
-            this.rbSourceAutre.UseVisualStyleBackColor = true;
+            this.gpReference.Controls.Add(this.cbRefSheetName);
+            this.gpReference.Controls.Add(this.btnRefFilePath);
+            this.gpReference.Controls.Add(this.txtRefFilePath);
+            this.gpReference.Controls.Add(this.lblRefFileSheet);
+            this.gpReference.Location = new System.Drawing.Point(12, 112);
+            this.gpReference.Name = "gpReference";
+            this.gpReference.Size = new System.Drawing.Size(445, 84);
+            this.gpReference.TabIndex = 17;
+            this.gpReference.TabStop = false;
+            this.gpReference.Text = "Fichier des Comptes de Référence";
+            // 
+            // cbRefSheetName
+            // 
+            this.cbRefSheetName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbRefSheetName.Enabled = false;
+            this.cbRefSheetName.FormattingEnabled = true;
+            this.cbRefSheetName.Location = new System.Drawing.Point(97, 51);
+            this.cbRefSheetName.Name = "cbRefSheetName";
+            this.cbRefSheetName.Size = new System.Drawing.Size(338, 21);
+            this.cbRefSheetName.TabIndex = 15;
+            // 
+            // btnRefFilePath
+            // 
+            this.btnRefFilePath.Location = new System.Drawing.Point(360, 17);
+            this.btnRefFilePath.Name = "btnRefFilePath";
+            this.btnRefFilePath.Size = new System.Drawing.Size(75, 23);
+            this.btnRefFilePath.TabIndex = 8;
+            this.btnRefFilePath.Text = "Parcourir ...";
+            this.btnRefFilePath.UseVisualStyleBackColor = true;
+            this.btnRefFilePath.Click += new System.EventHandler(this.btnRefFilePath_Click);
+            // 
+            // lblRefFileSheet
+            // 
+            this.lblRefFileSheet.AutoSize = true;
+            this.lblRefFileSheet.Location = new System.Drawing.Point(3, 54);
+            this.lblRefFileSheet.Name = "lblRefFileSheet";
+            this.lblRefFileSheet.Size = new System.Drawing.Size(91, 13);
+            this.lblRefFileSheet.TabIndex = 8;
+            this.lblRefFileSheet.Text = "Fichier Référénce";
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(472, 310);
+            this.ClientSize = new System.Drawing.Size(472, 395);
+            this.Controls.Add(this.gpReference);
+            this.Controls.Add(this.gpSourceFile);
             this.Controls.Add(this.gpFileType);
-            this.Controls.Add(this.lblSheetName);
-            this.Controls.Add(this.cbSheetName);
             this.Controls.Add(this.groupDelimiter);
-            this.Controls.Add(this.lblRefFile);
-            this.Controls.Add(this.txtRefFilePath);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.lblVersion);
-            this.Controls.Add(this.txtFilePath);
             this.Controls.Add(this.btnExecute);
-            this.Controls.Add(this.btnFilePath);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -363,6 +412,10 @@
             this.groupDelimiter.PerformLayout();
             this.gpFileType.ResumeLayout(false);
             this.gpFileType.PerformLayout();
+            this.gpSourceFile.ResumeLayout(false);
+            this.gpSourceFile.PerformLayout();
+            this.gpReference.ResumeLayout(false);
+            this.gpReference.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -384,7 +437,6 @@
         private System.Windows.Forms.ToolStripMenuItem menuBtnExit;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.TextBox txtRefFilePath;
-        private System.Windows.Forms.Label lblRefFile;
         private System.Windows.Forms.RadioButton rbTab;
         private System.Windows.Forms.RadioButton rbColon;
         private System.Windows.Forms.GroupBox groupDelimiter;
@@ -398,6 +450,11 @@
         private System.Windows.Forms.RadioButton rbSourceAutre;
         private System.Windows.Forms.RadioButton rbSourceCM;
         private System.Windows.Forms.RadioButton rbSourceCA;
+        private System.Windows.Forms.GroupBox gpSourceFile;
+        private System.Windows.Forms.GroupBox gpReference;
+        private System.Windows.Forms.ComboBox cbRefSheetName;
+        private System.Windows.Forms.Button btnRefFilePath;
+        private System.Windows.Forms.Label lblRefFileSheet;
     }
 }
 

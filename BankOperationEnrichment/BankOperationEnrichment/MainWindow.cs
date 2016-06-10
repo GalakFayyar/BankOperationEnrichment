@@ -108,10 +108,7 @@ namespace BankOperationEnrichment
 
         private void ExportEnrichedData()
         {
-            OleDbDataAdapter dataAdapter;
             OleDbConnection connection = null;
-            DataSet dataSet = new DataSet();
-            DataTable excelSheet;
 
             string resultFile = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString() + "\\Result.xls";
 
@@ -130,7 +127,7 @@ namespace BankOperationEnrichment
                 if (File.Exists(resultFile))
                 {
                     string message = string.Format("Le fichier '{0}' existe déja. Voulez-vous le remplacer ?", resultFile);
-                    DialogResult dr = MessageBox.Show(message, "Fichier déja existant", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    DialogResult dr = MessageBox.Show(new Form() { TopMost = true }, message, "Fichier déja existant", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                     if (dr == DialogResult.Yes)
                         File.Delete(resultFile);
                     if (dr == DialogResult.No)
@@ -218,7 +215,7 @@ namespace BankOperationEnrichment
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message, "Erreur de traitement", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
             finally
@@ -242,7 +239,7 @@ namespace BankOperationEnrichment
             DataTable excelSheet;
 
             // Open connection
-            string connString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + filePath + "; Extended Properties = 'Excel 12.0 Xml;HDR=YES;IMEX=1;'";
+            string connString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + filePath + "; Extended Properties = 'Excel 8.0;HDR=YES;IMEX=1;'";
             //string connString = @"provider = Microsoft.Jet.OLEDB.4.0; data source = " + filePath + "; Extended Properties = 'Excel 8.0;HDR=Yes;IMEX=1'";
             //string connString = @"Provider = Microsoft.Jet.OLEDB.4.0; Data Source = " + filePath + "; Extended Properties = 'Excel 8.0 Xml;HDR=Yes;IMEX=1'";
 
@@ -252,7 +249,7 @@ namespace BankOperationEnrichment
                 connection.Open();
 
                 // Select data from the Workbook Sheet1
-                dataAdapter = new OleDbDataAdapter("select * from [" + sheetName + "$]", connection);
+                dataAdapter = new OleDbDataAdapter("SELECT * FROM [" + sheetName + "$]", connection);
                 dataAdapter.Fill(dataSet);
                 excelSheet = dataSet.Tables[0];
                 connection.Close();
@@ -271,10 +268,7 @@ namespace BankOperationEnrichment
                         OperateOtherExcelFile(excelSheet);
                 }
                 else
-                {
                     OperateReferenceExcelFile(excelSheet);
-                }
-                
             }
             catch(Exception ex)
             {
@@ -286,11 +280,14 @@ namespace BankOperationEnrichment
         {
             foreach (DataRow excelLine in dataTable.Rows)
             {
-                arrayRefData.Add(new AccountReference()
+                if (excelLine.ItemArray[0] != DBNull.Value && excelLine.ItemArray[1] != DBNull.Value)
                 {
-                    NumeroCompte = excelLine.ItemArray[0] != DBNull.Value ? excelLine.ItemArray[0].ToString() : string.Empty,
-                    LibelleCompte = excelLine.ItemArray[1] != DBNull.Value ? excelLine.ItemArray[1].ToString() : string.Empty
-                });
+                    arrayRefData.Add(new AccountReference()
+                    {
+                        NumeroCompte = excelLine.ItemArray[0].ToString(),
+                        LibelleCompte = excelLine.ItemArray[1].ToString()
+                    });
+                }
             }
         }
 
@@ -308,13 +305,16 @@ namespace BankOperationEnrichment
             //{
             for (int i = startIndex; i < dataTable.Rows.Count; i++)
             {
-                arrayData.Add(new Data()
+                if (dataTable.Rows[i].ItemArray[mappingColumns["date"]] != DBNull.Value)
                 {
-                    Date = dataTable.Rows[i].ItemArray[mappingColumns["date"]] != DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i].ItemArray[mappingColumns["date"]]) : new DateTime(),
-                    Libelle = dataTable.Rows[i].ItemArray[mappingColumns["libelle"]] != DBNull.Value ? dataTable.Rows[i].ItemArray[mappingColumns["libelle"]].ToString() : string.Empty,
-                    Depense = dataTable.Rows[i].ItemArray[mappingColumns["depense"]] != DBNull.Value ? Convert.ToDouble(dataTable.Rows[i].ItemArray[mappingColumns["depense"]]) : 0,
-                    Recettes = dataTable.Rows[i].ItemArray[mappingColumns["recette"]] != DBNull.Value ? Convert.ToDouble(dataTable.Rows[i].ItemArray[mappingColumns["recette"]]) : 0
-                });
+                    arrayData.Add(new Data()
+                    {
+                        Date = dataTable.Rows[i].ItemArray[mappingColumns["date"]] != DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i].ItemArray[mappingColumns["date"]]) : new DateTime(),
+                        Libelle = dataTable.Rows[i].ItemArray[mappingColumns["libelle"]] != DBNull.Value ? dataTable.Rows[i].ItemArray[mappingColumns["libelle"]].ToString() : string.Empty,
+                        Depense = dataTable.Rows[i].ItemArray[mappingColumns["depense"]] != DBNull.Value ? Convert.ToDouble(dataTable.Rows[i].ItemArray[mappingColumns["depense"]]) : 0,
+                        Recettes = dataTable.Rows[i].ItemArray[mappingColumns["recette"]] != DBNull.Value ? Convert.ToDouble(dataTable.Rows[i].ItemArray[mappingColumns["recette"]]) : 0
+                    });
+                }
             }
         }
 

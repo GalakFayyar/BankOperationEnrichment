@@ -65,7 +65,6 @@
             this.splitContainer1.Panel1.Controls.Add(this.btnContinue);
             this.splitContainer1.Panel1.Controls.Add(this.gbMapping);
             this.splitContainer1.Panel1.Controls.Add(this.checkBox1);
-            this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainer1.Panel2
             // 
@@ -115,7 +114,6 @@
             this.txtColRecette.Size = new System.Drawing.Size(33, 20);
             this.txtColRecette.TabIndex = 8;
             this.txtColRecette.Text = "F";
-            this.txtColRecette.TextChanged += new System.EventHandler(this.txtColRecette_TextChanged);
             // 
             // lblColRecette
             // 
@@ -134,7 +132,6 @@
             this.txtColDepense.Size = new System.Drawing.Size(33, 20);
             this.txtColDepense.TabIndex = 6;
             this.txtColDepense.Text = "E";
-            this.txtColDepense.TextChanged += new System.EventHandler(this.txtColDepense_TextChanged);
             // 
             // lblColDepense
             // 
@@ -153,7 +150,6 @@
             this.txtColLibOperation.Size = new System.Drawing.Size(33, 20);
             this.txtColLibOperation.TabIndex = 4;
             this.txtColLibOperation.Text = "C";
-            this.txtColLibOperation.TextChanged += new System.EventHandler(this.txtColLibOperation_TextChanged);
             // 
             // lblColLibelle
             // 
@@ -172,7 +168,6 @@
             this.txtColDateOperation.Size = new System.Drawing.Size(33, 20);
             this.txtColDateOperation.TabIndex = 2;
             this.txtColDateOperation.Text = "A";
-            this.txtColDateOperation.TextChanged += new System.EventHandler(this.txtColDateOperation_TextChanged);
             // 
             // lblColDate
             // 
@@ -239,7 +234,6 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "ExcelPreview";
             this.Text = "Prévisualisation fichier Excel";
-            this.Load += new System.EventHandler(this.ExcelPreview_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);

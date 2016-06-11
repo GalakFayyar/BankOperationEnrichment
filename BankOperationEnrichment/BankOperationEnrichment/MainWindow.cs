@@ -91,19 +91,25 @@ namespace BankOperationEnrichment
 
         private void btnExecute_Click(object sender, EventArgs e)
         {
+            lblStatut.Visible = false;
             HashSet<Data> arrayData = new HashSet<Data>();
 
             // Read Reference Excel File
             ReadExcelFile(fileCodeReferences, cbRefSheetName.SelectedItem.ToString(), true);
+            progressBar.Value = 25;
 
             // Read Excel File depending Source File
             ReadExcelFile(fileToOperate, cbSheetName.SelectedItem.ToString());
+            progressBar.Value = 50;
 
             // Data enrichment
             DataEnrichment();
+            progressBar.Value = 75;
 
             // Export data
             ExportEnrichedData();
+            progressBar.Value = 100;
+            lblStatut.Visible = true;
         }
 
         private void ExportEnrichedData()
@@ -386,9 +392,12 @@ namespace BankOperationEnrichment
             //    }
             //}
 
+            // Set Delimiter
+            rbTab.Checked = true;
+            
             // Start reading data
             int startIndex = 0;
-            int delimiter = 9;
+            int delimiter = getDelimiterSelected();
             // 9  ==> \t 
             // 10 ==> \n
             // 13 ==> \r
@@ -436,19 +445,24 @@ namespace BankOperationEnrichment
             }
         }
 
-        private string getDelimiterSelected()
+        private int getDelimiterSelected()
         {
             if (rbColon.Checked)
-                return ",";
+                //return ",";
+                return 44;
             if (rbSemiColon.Checked)
-                return ";";
+                //return ";";
+                return 59;
             if (rbSpace.Checked)
-                return " ";
-            if (rbNone.Checked)
-                return "";
+                //return " ";
+                return 32;
             if (rbTab.Checked)
-                return "\t";
-            return "";
+                //return "\t";
+                return 9;
+            if (rbPipe.Checked)
+                //return "|";
+                return 124;
+            return 0;
         }
 
         private void releaseObject(object obj)

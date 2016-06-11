@@ -60,6 +60,8 @@
             this.cbRefSheetName = new System.Windows.Forms.ComboBox();
             this.btnRefFilePath = new System.Windows.Forms.Button();
             this.lblRefFileSheet = new System.Windows.Forms.Label();
+            this.rbPipe = new System.Windows.Forms.RadioButton();
+            this.lblStatut = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.groupDelimiter.SuspendLayout();
             this.gpFileType.SuspendLayout();
@@ -70,11 +72,11 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(382, 357);
+            this.btnCancel.Location = new System.Drawing.Point(382, 373);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 0;
-            this.btnCancel.Text = "Annuler";
+            this.btnCancel.Text = "Fermer";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
@@ -91,7 +93,7 @@
             // btnExecute
             // 
             this.btnExecute.Enabled = false;
-            this.btnExecute.Location = new System.Drawing.Point(301, 357);
+            this.btnExecute.Location = new System.Drawing.Point(301, 373);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(75, 23);
             this.btnExecute.TabIndex = 2;
@@ -114,7 +116,7 @@
             this.lblVersion.AutoSize = true;
             this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVersion.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.lblVersion.Location = new System.Drawing.Point(9, 363);
+            this.lblVersion.Location = new System.Drawing.Point(9, 379);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(42, 13);
             this.lblVersion.TabIndex = 4;
@@ -122,9 +124,9 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(9, 316);
+            this.progressBar.Location = new System.Drawing.Point(12, 332);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(448, 23);
+            this.progressBar.Size = new System.Drawing.Size(445, 23);
             this.progressBar.TabIndex = 5;
             // 
             // menuStrip1
@@ -135,7 +137,7 @@
             this.menuBtnExit});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(472, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(469, 24);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -211,15 +213,17 @@
             // 
             // groupDelimiter
             // 
+            this.groupDelimiter.Controls.Add(this.rbPipe);
             this.groupDelimiter.Controls.Add(this.lblExplNone);
             this.groupDelimiter.Controls.Add(this.rbNone);
             this.groupDelimiter.Controls.Add(this.rbSpace);
             this.groupDelimiter.Controls.Add(this.rbSemiColon);
             this.groupDelimiter.Controls.Add(this.rbTab);
             this.groupDelimiter.Controls.Add(this.rbColon);
+            this.groupDelimiter.Enabled = false;
             this.groupDelimiter.Location = new System.Drawing.Point(12, 258);
             this.groupDelimiter.Name = "groupDelimiter";
-            this.groupDelimiter.Size = new System.Drawing.Size(445, 52);
+            this.groupDelimiter.Size = new System.Drawing.Size(445, 69);
             this.groupDelimiter.TabIndex = 12;
             this.groupDelimiter.TabStop = false;
             this.groupDelimiter.Text = "Type de Séparateur";
@@ -382,12 +386,36 @@
             this.lblRefFileSheet.TabIndex = 8;
             this.lblRefFileSheet.Text = "Fichier Référénce";
             // 
+            // rbPipe
+            // 
+            this.rbPipe.AutoSize = true;
+            this.rbPipe.Location = new System.Drawing.Point(6, 42);
+            this.rbPipe.Name = "rbPipe";
+            this.rbPipe.Size = new System.Drawing.Size(51, 17);
+            this.rbPipe.TabIndex = 16;
+            this.rbPipe.TabStop = true;
+            this.rbPipe.Text = "Pipe |";
+            this.rbPipe.UseVisualStyleBackColor = true;
+            // 
+            // lblStatut
+            // 
+            this.lblStatut.AutoSize = true;
+            this.lblStatut.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatut.Location = new System.Drawing.Point(278, 357);
+            this.lblStatut.Name = "lblStatut";
+            this.lblStatut.Size = new System.Drawing.Size(179, 13);
+            this.lblStatut.TabIndex = 18;
+            this.lblStatut.Text = "Traitement terminé (Result.xls)";
+            this.lblStatut.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblStatut.Visible = false;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(472, 395);
+            this.ClientSize = new System.Drawing.Size(469, 406);
+            this.Controls.Add(this.lblStatut);
             this.Controls.Add(this.gpReference);
             this.Controls.Add(this.gpSourceFile);
             this.Controls.Add(this.gpFileType);
@@ -455,6 +483,8 @@
         private System.Windows.Forms.ComboBox cbRefSheetName;
         private System.Windows.Forms.Button btnRefFilePath;
         private System.Windows.Forms.Label lblRefFileSheet;
+        private System.Windows.Forms.RadioButton rbPipe;
+        private System.Windows.Forms.Label lblStatut;
     }
 }
 

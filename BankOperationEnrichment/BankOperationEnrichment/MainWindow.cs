@@ -45,6 +45,7 @@ namespace BankOperationEnrichment
         private void menuBtnSetRefCodeFile_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
+            openFileDialog1.FileName = string.Empty;
             DialogResult result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
@@ -68,6 +69,7 @@ namespace BankOperationEnrichment
         private void btnFilePath_Click(object sender, EventArgs e)
         {
             openFileDialog1.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
+            openFileDialog1.FileName = string.Empty;
             DialogResult result = openFileDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {

@@ -122,7 +122,7 @@ namespace BankOperationEnrichment
 
             // Open connection
             string connString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + resultFile + "; Extended Properties = 'Excel 12.0 Xml;HDR=YES;'";
-            //string connString = @"provider = Microsoft.Jet.OLEDB.4.0; data source = " + filePath + "; Extended Properties = 'Excel 8.0;HDR=Yes;IMEX=1'";
+            //string connString = @"provider = Microsoft.Jet.OLEDB.4.0; data source = " + resultFile + "; Extended Properties = 'Excel 8.0;HDR=Yes;IMEX=1'";
             //string connString = @"Provider = Microsoft.Jet.OLEDB.4.0; Data Source = " + filePath + "; Extended Properties = 'Excel 8.0 Xml;HDR=Yes;IMEX=1'";
 
             try
@@ -247,7 +247,7 @@ namespace BankOperationEnrichment
             DataTable excelSheet;
 
             // Open connection
-            string connString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + filePath + "; Extended Properties = 'Excel 8.0;HDR=YES;IMEX=1;'";
+            string connString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + filePath + "; Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'";
             //string connString = @"provider = Microsoft.Jet.OLEDB.4.0; data source = " + filePath + "; Extended Properties = 'Excel 8.0;HDR=Yes;IMEX=1'";
             //string connString = @"Provider = Microsoft.Jet.OLEDB.4.0; Data Source = " + filePath + "; Extended Properties = 'Excel 8.0 Xml;HDR=Yes;IMEX=1'";
 

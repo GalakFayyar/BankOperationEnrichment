@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-using Office=Microsoft.Office.Core;
+using Office = Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
 using System.Reflection;
@@ -14,7 +10,7 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace EmbeddedExcel
 {
-	public partial class ExcelWrapper : UserControl {
+    public partial class ExcelWrapper : UserControl {
 
 		[DllImport("ole32.dll")]
 		static extern int GetRunningObjectTable(uint reserved,out IRunningObjectTable pprot);

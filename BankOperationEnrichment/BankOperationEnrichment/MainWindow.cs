@@ -14,6 +14,8 @@ namespace BankOperationEnrichment
 {
     public partial class MainWindow : Form
     {
+        #region Public members
+
         public string fileToOperate;
         public string fileCodeReferences;
         public string excelFiledelimiter;
@@ -27,6 +29,8 @@ namespace BankOperationEnrichment
         public object oldValueExcel8 = null;
         public object oldValueExcel12 = null;
 
+        #endregion
+
         public MainWindow()
         {
             arrayData = new HashSet<Data>();
@@ -35,6 +39,8 @@ namespace BankOperationEnrichment
             lblVersion.Text = "BOE v0.1";
             txtRefFilePath.Text = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString();
         }
+
+        #region UI actions
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -114,6 +120,15 @@ namespace BankOperationEnrichment
             lblStatut.Visible = true;
         }
 
+        private void btnRefFilePath_Click(object sender, EventArgs e)
+        {
+            menuBtnSetRefCodeFile_Click(sender, e);
+        }
+
+        #endregion
+
+        #region Operation Functions
+
         private void ExportEnrichedData()
         {
             OleDbConnection connection = null;
@@ -174,11 +189,6 @@ namespace BankOperationEnrichment
                 if (connection != null)
                     connection.Close();
             }
-        }
-
-        private string TryConvertToString(object input)
-        {
-            return input == null ? "" : input.ToString();
         }
 
         private void DataEnrichment()
@@ -309,8 +319,6 @@ namespace BankOperationEnrichment
             Dictionary<string, int> mappingColumns = preview.mappingColumns;
             int startIndex = preview.startLineNumber;
 
-            //foreach (DataRow excelLine in dataTable.Rows)
-            //{
             for (int i = startIndex; i < dataTable.Rows.Count; i++)
             {
                 if (dataTable.Rows[i].ItemArray[mappingColumns["date"]] != DBNull.Value)
@@ -326,74 +334,8 @@ namespace BankOperationEnrichment
             }
         }
 
-        private bool TestIfKeyExists(string regPath, string valueName)
-        {
-            return (Registry.GetValue(regPath, valueName, null) != null);
-        }
-
-        private void UpdateRegistryKeysForNavigator()
-        {
-            try
-            {
-                if (TestIfKeyExists(strRegPathExcel8, keyExcelAccess))
-                {
-                    oldValueExcel8 = Registry.GetValue(strRegPathExcel8, keyExcelAccess, null);
-                    Registry.SetValue(strRegPathExcel8, keyExcelAccess, "80000A00");
-                }
-
-                if (TestIfKeyExists(strRegPathExcel12, keyExcelAccess))
-                {
-                    oldValueExcel12 = Registry.GetValue(strRegPathExcel12, keyExcelAccess, null);
-                    Registry.SetValue(strRegPathExcel12, keyExcelAccess, "80000A00");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Erreur d'écriture", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void ResetRegistryKeysForNavigator()
-        {
-            try
-            {
-                if (TestIfKeyExists(strRegPathExcel8, keyExcelAccess) && oldValueExcel8 != null)
-                    Registry.SetValue(strRegPathExcel8, keyExcelAccess, oldValueExcel8);
-
-                if (TestIfKeyExists(strRegPathExcel12, keyExcelAccess) && oldValueExcel12 != null)
-                    Registry.SetValue(strRegPathExcel12, keyExcelAccess, oldValueExcel12);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Erreur d'écriture", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
         private void OperateCMExcelFile(DataTable dataTable)
         {
-            //// Avoid Header
-            //int startIndex = 0;
-            //// Use of dates as pivot
-            //Regex datePattern = new Regex(@"\d{2}/\d{2}/\d{4}");
-            //for (int i = startIndex; i < dataTable.Rows.Count; i++)
-            //{
-            //    // Parsing data
-            //    if (dataTable.Rows[i].ItemArray[0] != DBNull.Value)
-            //    {
-            //        var idxStartLibelle = datePattern.Matches(dataTable.Rows[i].ItemArray[0].ToString())[1].Index + datePattern.Matches(dataTable.Rows[i].ItemArray[0].ToString())[1].Length;
-            //        var idxEndLibelle = datePattern.Matches(dataTable.Rows[i].ItemArray[0].ToString())[2].Index;
-            //        var montant = Convert.ToDouble(dataTable.Rows[i].ItemArray[0].ToString().Substring(idxEndLibelle + datePattern.Matches(dataTable.Rows[i].ItemArray[0].ToString())[2].Length));
-
-            //        arrayData.Add(new Data()
-            //        {
-            //            Date = Convert.ToDateTime(datePattern.Matches(dataTable.Rows[i].ItemArray[0].ToString())[1].ToString()),
-            //            Libelle = dataTable.Rows[i].ItemArray[0].ToString().Substring(idxStartLibelle, idxEndLibelle - idxStartLibelle + 1),
-            //            Depense = montant < 0 ? -1 * montant : 0,
-            //            Recettes = montant > 0 ? montant : 0
-            //        });
-            //    }
-            //}
-
             // Set Delimiter
             rbTab.Checked = true;
             
@@ -447,6 +389,15 @@ namespace BankOperationEnrichment
             }
         }
 
+        #endregion
+
+        #region Tool functions
+
+        private string TryConvertToString(object input)
+        {
+            return input == null ? "" : input.ToString();
+        }
+
         private int getDelimiterSelected()
         {
             if (rbColon.Checked)
@@ -467,27 +418,49 @@ namespace BankOperationEnrichment
             return 0;
         }
 
-        private void releaseObject(object obj)
+        private bool TestIfKeyExists(string regPath, string valueName)
+        {
+            return (Registry.GetValue(regPath, valueName, null) != null);
+        }
+
+        private void UpdateRegistryKeysForNavigator()
         {
             try
             {
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
-                obj = null;
+                if (TestIfKeyExists(strRegPathExcel8, keyExcelAccess))
+                {
+                    oldValueExcel8 = Registry.GetValue(strRegPathExcel8, keyExcelAccess, null);
+                    Registry.SetValue(strRegPathExcel8, keyExcelAccess, "80000A00");
+                }
+
+                if (TestIfKeyExists(strRegPathExcel12, keyExcelAccess))
+                {
+                    oldValueExcel12 = Registry.GetValue(strRegPathExcel12, keyExcelAccess, null);
+                    Registry.SetValue(strRegPathExcel12, keyExcelAccess, "80000A00");
+                }
             }
             catch (Exception ex)
             {
-                obj = null;
-                MessageBox.Show("Unable to release the Object " + ex.ToString());
-            }
-            finally
-            {
-                GC.Collect();
+                MessageBox.Show(ex.Message, "Erreur d'écriture", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void btnRefFilePath_Click(object sender, EventArgs e)
+        private void ResetRegistryKeysForNavigator()
         {
-            menuBtnSetRefCodeFile_Click(sender, e);
+            try
+            {
+                if (TestIfKeyExists(strRegPathExcel8, keyExcelAccess) && oldValueExcel8 != null)
+                    Registry.SetValue(strRegPathExcel8, keyExcelAccess, oldValueExcel8);
+
+                if (TestIfKeyExists(strRegPathExcel12, keyExcelAccess) && oldValueExcel12 != null)
+                    Registry.SetValue(strRegPathExcel12, keyExcelAccess, oldValueExcel12);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erreur d'écriture", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+        #endregion
     }
 }

@@ -4,7 +4,7 @@ Bank Operation Enrichment
 > **Versions:**
 > v0.1 : initial project
 
-![](capture.png?raw=true)
+![](capture.PNG?raw=true)
 
 Project Objective
 -------------

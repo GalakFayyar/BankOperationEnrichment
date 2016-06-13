@@ -4,6 +4,8 @@ Bank Operation Enrichment
 > **Versions:**
 > v0.1 : initial project
 
+![](capture.png?raw=true)
+
 Project Objective
 -------------
 This short project aims to enrich excel document containing bank operation extractions with account details such as code operation and account code.

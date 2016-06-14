@@ -9,6 +9,7 @@ using Microsoft.Win32;
 using System.Linq;
 using System.Globalization;
 using System.IO;
+using CsvHelper;
 
 namespace BankOperationEnrichment
 {
@@ -59,7 +60,8 @@ namespace BankOperationEnrichment
                 txtRefFilePath.Text = fileCodeReferences;
                 if (fileCodeReferences != null)
                 {
-                    cbRefSheetName.Enabled = true;
+                    lblRefFileSheet.Visible = true;
+                    cbRefSheetName.Visible = true;
                     listSheetsRef = new List<string>();
                     foreach (var sheet in GetSheetsNameFromWorkbook(fileCodeReferences))
                     {
@@ -69,54 +71,111 @@ namespace BankOperationEnrichment
                     }
                     cbRefSheetName.DataSource = new BindingSource(listSheetsRef, null);
                 }
+                else
+                {
+                    lblRefFileSheet.Visible = false;
+                    cbRefSheetName.Visible = false;
+                }
+                if (fileToOperate != null && fileCodeReferences != null)
+                    btnExecute.Enabled = true;
             }
         }
 
         private void btnFilePath_Click(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
-            openFileDialog1.FileName = string.Empty;
-            DialogResult result = openFileDialog1.ShowDialog();
-            if (result == DialogResult.OK)
+            try
             {
-                fileToOperate = openFileDialog1.FileName;
-                txtFilePath.Text = fileToOperate;
-                if (fileToOperate != null)
+                openFileDialog1.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm;*.csv";
+                openFileDialog1.FileName = string.Empty;
+                DialogResult result = openFileDialog1.ShowDialog();
+                if (result == DialogResult.OK)
                 {
-                    cbSheetName.Enabled = true;
-                    listSheets = new List<string>();
-                    foreach (var sheet in GetSheetsNameFromWorkbook(fileToOperate))
+                    fileToOperate = openFileDialog1.FileName;
+                    txtFilePath.Text = fileToOperate;
+                    if (fileToOperate != null && Path.GetExtension(fileToOperate) != ".csv")
                     {
-                        // Delete $ at the end and add to list for display
-                        string _sheet = sheet.Replace("'", string.Empty);
-                        listSheets.Add(_sheet.Substring(0, _sheet.Length - 1));
+                        lblSheetName.Visible = true;
+                        cbSheetName.Visible = true;
+                        listSheets = new List<string>();
+                        foreach (var sheet in GetSheetsNameFromWorkbook(fileToOperate))
+                        {
+                            // Delete $ at the end and add to list for display
+                            string _sheet = sheet.Replace("'", string.Empty);
+                            listSheets.Add(_sheet.Substring(0, _sheet.Length - 1));
+                        }
+                        cbSheetName.DataSource = new BindingSource(listSheets, null);
                     }
-                    cbSheetName.DataSource = new BindingSource(listSheets, null);
-                    btnExecute.Enabled = true;
+                    else
+                    {
+                        lblSheetName.Visible = false;
+                        cbSheetName.Visible = false;
+                    }
+
+                    if (fileToOperate != null && fileCodeReferences != null)
+                        btnExecute.Enabled = true;
                 }
+            }
+            catch
+            {
+                return;
             }
         }
 
         private void btnExecute_Click(object sender, EventArgs e)
         {
+            // Label status operation properties reset
             lblStatut.Visible = false;
-            HashSet<Data> arrayData = new HashSet<Data>();
+            lblStatut.Text = "Traitement terminé (Result.xls)";
+            lblStatut.ForeColor = System.Drawing.Color.Black;
 
-            // Read Reference Excel File
-            ReadExcelFile(fileCodeReferences, cbRefSheetName.SelectedItem.ToString(), true);
-            progressBar.Value = 25;
+            bool operationStatus = true;
+            arrayData.Clear();
+            arrayRefData.Clear();
 
             // Read Excel File depending Source File
-            ReadExcelFile(fileToOperate, cbSheetName.SelectedItem.ToString());
-            progressBar.Value = 50;
+            var selectedFile = cbRefSheetName.SelectedItem.ToString();
+            switch (Path.GetExtension(fileToOperate).ToString())
+            {
+                case ".csv":
+                    // Auto set delimiter
+                    rbSemiColon.Checked = true;
+                    operationStatus &= ReadCsvFile(fileToOperate, getDelimiterSelected());
+                    break;
+                case ".xls":
+                case ".xlsx":
+                case ".xlsxm":
+                    operationStatus &= ReadExcelFile(fileToOperate, cbSheetName.SelectedItem.ToString());
+                    break;
+                default:
+                    MessageBox.Show("Format du fichier source incorrect. Entrer un fichier Excel au format csv, xls, xlsx ou xlsm.", "Erreur de traitement", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    progressBar.Value = 0;
+                    return;
+            }
+            progressBar.Value = 25;
+
+            // Read Reference Excel File
+            if (Path.GetExtension(fileCodeReferences) == ".csv")
+            {
+                MessageBox.Show("Format du fichier de réference incorrect. Entrer un fichier Excel au format xls, xlsx ou xlsm.", "Erreur de traitement", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                progressBar.Value = 0;
+                return;
+            } else
+            {
+                operationStatus &= ReadExcelFile(fileCodeReferences, cbRefSheetName.SelectedItem.ToString(), true);
+                progressBar.Value = 50;
+            }
 
             // Data enrichment
             DataEnrichment();
             progressBar.Value = 75;
 
             // Export data
-            ExportEnrichedData();
-            progressBar.Value = 100;
+            operationStatus &= ExportEnrichedData();
+            progressBar.Value = (operationStatus) ? 100 : 0;
+
+            // Label status operation properties set
+            lblStatut.ForeColor = (!operationStatus) ? System.Drawing.Color.Red : lblStatut.ForeColor;
+            lblStatut.Text = (!operationStatus) ? "Erreur de traitement" : lblStatut.Text;
             lblStatut.Visible = true;
         }
 
@@ -129,7 +188,7 @@ namespace BankOperationEnrichment
 
         #region Operation Functions
 
-        private void ExportEnrichedData()
+        private bool ExportEnrichedData()
         {
             OleDbConnection connection = null;
 
@@ -154,7 +213,7 @@ namespace BankOperationEnrichment
                     if (dr == DialogResult.Yes)
                         File.Delete(resultFile);
                     if (dr == DialogResult.No)
-                        return;
+                        return false;
                 }
 
                 connection.Open();
@@ -162,12 +221,12 @@ namespace BankOperationEnrichment
                 // Create Table
                 OleDbCommand createcmdData = new OleDbCommand(requete, connection);
                 createcmdData.Connection = connection;
-                createcmdData.CommandText = @"CREATE TABLE Donnees (DATE_OPERATION char(255), CODE_JOURNAL char(255), NUM_COMPTE char(255), NUM_OPERATION char(255), LIBELLE char(255), DEPENSES char(255), RECETTES char(255))";
+                createcmdData.CommandText = @"CREATE TABLE Donnees (DATE_OPERATION char(50), CODE_JOURNAL char(50), NUM_COMPTE char(50), NUM_OPERATION char(50), LIBELLE char(255), DEPENSES char(50), RECETTES char(50))";
                 createcmdData.ExecuteNonQuery();
 
                 foreach (Data data in arrayData)
                 {
-                    requete = string.Format("INSERT INTO [Donnees$] VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}');",
+                    requete = string.Format("INSERT INTO [Donnees$] VALUES (@date, @codeJournal, @numeroCompte, @numeroOperation, @libelle, @depenses, @recettes);",
                         data.Date.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
                         TryConvertToString(data.CodeJournal),
                         TryConvertToString(data.NumeroCompte),
@@ -177,12 +236,30 @@ namespace BankOperationEnrichment
                         Convert.ToString(data.Recettes));
 
                     OleDbCommand insertCmdData = new OleDbCommand(requete, connection);
+                    insertCmdData.Parameters.Add(new OleDbParameter("@date", data.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)));
+                    insertCmdData.Parameters.Add(new OleDbParameter("@codeJournal", TryConvertToString(data.CodeJournal)));
+                    insertCmdData.Parameters.Add(new OleDbParameter("@numeroCompte", TryConvertToString(data.NumeroCompte)));
+                    insertCmdData.Parameters.Add(new OleDbParameter("@numeroOperation", TryConvertToString(data.NumeroOperation)));
+
+                    // Substring if necessary
+                    var _libelle = string.Empty;
+                    if (data.Libelle != null && data.Libelle != string.Empty) {
+                        int len = Convert.ToString(data.Libelle).Length > 256 ? 256 : Convert.ToString(data.Libelle).Length;
+                        _libelle = Convert.ToString(data.Libelle).Substring(0, len - 1);
+                    }
+                    insertCmdData.Parameters.Add(new OleDbParameter("@libelle", _libelle));
+
+                    insertCmdData.Parameters.Add(new OleDbParameter("@depenses", Convert.ToString(data.Depense)));
+                    insertCmdData.Parameters.Add(new OleDbParameter("@recettes", Convert.ToString(data.Recettes)));
                     insertCmdData.ExecuteNonQuery();
                 }
+
+                return true;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Erreur d'écriture", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
             finally
             {
@@ -249,12 +326,14 @@ namespace BankOperationEnrichment
             }
         }
 
-        private void ReadExcelFile(string filePath, string sheetName, bool isRefFile = false)
+        private bool ReadExcelFile(string filePath, string sheetName, bool isRefFile = false)
         {
             OleDbDataAdapter dataAdapter;
             OleDbConnection connection;
             DataSet dataSet = new DataSet();
             DataTable excelSheet;
+
+            bool operationStatus = true;
 
             // Open connection
             string connString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + filePath + "; Extended Properties = 'Excel 12.0;HDR=YES;IMEX=1;'";
@@ -279,22 +358,25 @@ namespace BankOperationEnrichment
                 if (!isRefFile)
                 {
                     if (rbSourceCA.Checked)
-                        OperateCAExcelFile(excelSheet);
+                        return operationStatus && OperateCAExcelFile(excelSheet);
                     if (rbSourceCM.Checked)
-                        OperateCMExcelFile(excelSheet);
+                        return operationStatus && OperateCMExcelFile(excelSheet);
                     if (rbSourceAutre.Checked)
-                        OperateOtherExcelFile(excelSheet);
+                        return operationStatus && OperateOtherExcelFile(excelSheet);
                 }
                 else
-                    OperateReferenceExcelFile(excelSheet);
+                    return operationStatus && OperateReferenceExcelFile(excelSheet);
+
+                return true;
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message, "Erreur de traitement", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
 
-        private void OperateReferenceExcelFile(DataTable dataTable)
+        private bool OperateReferenceExcelFile(DataTable dataTable)
         {
             foreach (DataRow excelLine in dataTable.Rows)
             {
@@ -307,34 +389,44 @@ namespace BankOperationEnrichment
                     });
                 }
             }
+
+            return true;
         }
 
-        public void OperateOtherExcelFile(DataTable dataTable)
+        public bool OperateOtherExcelFile(DataTable dataTable)
         {
             UpdateRegistryKeysForNavigator();
 
             ExcelPreview preview = new ExcelPreview(fileToOperate);
             preview.ShowDialog();
 
-            Dictionary<string, int> mappingColumns = preview.mappingColumns;
-            int startIndex = preview.startLineNumber;
-
-            for (int i = startIndex; i < dataTable.Rows.Count; i++)
+            if (preview.mappingColumns != null)
             {
-                if (dataTable.Rows[i].ItemArray[mappingColumns["date"]] != DBNull.Value)
+                Dictionary<string, int> mappingColumns = preview.mappingColumns;
+                int startIndex = preview.startLineNumber;
+
+                for (int i = startIndex; i < dataTable.Rows.Count; i++)
                 {
-                    arrayData.Add(new Data()
+                    if (dataTable.Rows[i].ItemArray[mappingColumns["date"]] != DBNull.Value)
                     {
-                        Date = dataTable.Rows[i].ItemArray[mappingColumns["date"]] != DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i].ItemArray[mappingColumns["date"]]) : new DateTime(),
-                        Libelle = dataTable.Rows[i].ItemArray[mappingColumns["libelle"]] != DBNull.Value ? dataTable.Rows[i].ItemArray[mappingColumns["libelle"]].ToString() : string.Empty,
-                        Depense = dataTable.Rows[i].ItemArray[mappingColumns["depense"]] != DBNull.Value ? Convert.ToDouble(dataTable.Rows[i].ItemArray[mappingColumns["depense"]]) : 0,
-                        Recettes = dataTable.Rows[i].ItemArray[mappingColumns["recette"]] != DBNull.Value ? Convert.ToDouble(dataTable.Rows[i].ItemArray[mappingColumns["recette"]]) : 0
-                    });
+                        arrayData.Add(new Data()
+                        {
+                            Date = dataTable.Rows[i].ItemArray[mappingColumns["date"]] != DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i].ItemArray[mappingColumns["date"]]) : new DateTime(),
+                            Libelle = dataTable.Rows[i].ItemArray[mappingColumns["libelle"]] != DBNull.Value ? dataTable.Rows[i].ItemArray[mappingColumns["libelle"]].ToString() : string.Empty,
+                            Depense = dataTable.Rows[i].ItemArray[mappingColumns["depense"]] != DBNull.Value ? Convert.ToDouble(dataTable.Rows[i].ItemArray[mappingColumns["depense"]]) : 0,
+                            Recettes = dataTable.Rows[i].ItemArray[mappingColumns["recette"]] != DBNull.Value ? Convert.ToDouble(dataTable.Rows[i].ItemArray[mappingColumns["recette"]]) : 0
+                        });
+                    }
                 }
-            }
+
+                return true;
+            } 
+            else
+                return false;
+            
         }
 
-        private void OperateCMExcelFile(DataTable dataTable)
+        private bool OperateCMExcelFile(DataTable dataTable)
         {
             // Set Delimiter
             rbTab.Checked = true;
@@ -363,15 +455,16 @@ namespace BankOperationEnrichment
                     });
                 }
             }
+
+            return true;
         }
 
-        private void OperateCAExcelFile(DataTable dataTable)
+        private bool OperateCAExcelFile(DataTable dataTable)
         {
             bool test = false;
             foreach (DataRow excelLine in dataTable.Rows)
             {
                 if (test && excelLine.ItemArray[0] != DBNull.Value && excelLine.ItemArray[2] != DBNull.Value)
-                {
                     arrayData.Add(new Data()
                     {
                         Date = excelLine.ItemArray[0] != DBNull.Value ? Convert.ToDateTime(excelLine.ItemArray[0]) : new DateTime(),
@@ -379,13 +472,58 @@ namespace BankOperationEnrichment
                         Depense = excelLine.ItemArray[3] != DBNull.Value ? Convert.ToDouble(excelLine.ItemArray[3]) : 0,
                         Recettes = excelLine.ItemArray[4] != DBNull.Value ? Convert.ToDouble(excelLine.ItemArray[4]) : 0
                     });
-                }
 
                 // Look for header line
                 if (excelLine.ItemArray[0].ToString().ToLower().Contains("date") &&
                     excelLine.ItemArray[1].ToString().ToLower().Contains("date") &&
                     excelLine.ItemArray[2].ToString().ToLower().Contains("libell"))
                     test = true;
+            }
+
+            return true;
+        }
+
+        private bool ReadCsvFile(string filePath, int separator)
+        {
+            try
+            {
+                var test = false;
+
+                FileInfo file = new FileInfo(filePath);
+
+                using (CsvReader csv = new CsvReader(file.OpenText()))
+                {
+                    csv.Configuration.Delimiter = TryConvertToString((char)separator);
+                    csv.Configuration.HasHeaderRecord = true;
+                    csv.Configuration.IgnoreQuotes = false;
+                    csv.Configuration.TrimFields = true;
+                    csv.Configuration.WillThrowOnMissingField = false;
+
+                    while (csv.Read())
+                    {
+                        string[] fieldData = csv.CurrentRecord;
+                        if (test)
+                            arrayData.Add(new Data()
+                            {
+                                Date = (fieldData[0] != "") ? Convert.ToDateTime(fieldData[0].ToString()) : new DateTime(),
+                                Libelle = (fieldData[2] != "") ? fieldData[2].ToString() : string.Empty,
+                                Depense = (fieldData[3] != "") ? Convert.ToDouble(fieldData[3].ToString()) : 0,
+                                Recettes = (fieldData[4] != "") ? Convert.ToDouble(fieldData[4].ToString()) : 0
+                            });
+
+                        // Look for header line
+                        if (fieldData[0].ToString().ToLower().Contains("date") &&
+                            fieldData[1].ToString().ToLower().Contains("date") &&
+                            fieldData[2].ToString().ToLower().Contains("libell"))
+                            test = true;
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erreur de traitement", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
 

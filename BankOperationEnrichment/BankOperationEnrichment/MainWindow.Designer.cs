@@ -46,6 +46,7 @@
             this.rbTab = new System.Windows.Forms.RadioButton();
             this.rbColon = new System.Windows.Forms.RadioButton();
             this.groupDelimiter = new System.Windows.Forms.GroupBox();
+            this.rbPipe = new System.Windows.Forms.RadioButton();
             this.lblExplNone = new System.Windows.Forms.Label();
             this.rbNone = new System.Windows.Forms.RadioButton();
             this.rbSpace = new System.Windows.Forms.RadioButton();
@@ -61,7 +62,6 @@
             this.cbRefSheetName = new System.Windows.Forms.ComboBox();
             this.btnRefFilePath = new System.Windows.Forms.Button();
             this.lblRefFileSheet = new System.Windows.Forms.Label();
-            this.rbPipe = new System.Windows.Forms.RadioButton();
             this.lblStatut = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.groupDelimiter.SuspendLayout();
@@ -229,6 +229,17 @@
             this.groupDelimiter.TabStop = false;
             this.groupDelimiter.Text = "Type de Séparateur";
             // 
+            // rbPipe
+            // 
+            this.rbPipe.AutoSize = true;
+            this.rbPipe.Location = new System.Drawing.Point(6, 42);
+            this.rbPipe.Name = "rbPipe";
+            this.rbPipe.Size = new System.Drawing.Size(51, 17);
+            this.rbPipe.TabIndex = 16;
+            this.rbPipe.TabStop = true;
+            this.rbPipe.Text = "Pipe |";
+            this.rbPipe.UseVisualStyleBackColor = true;
+            // 
             // lblExplNone
             // 
             this.lblExplNone.AutoSize = true;
@@ -272,12 +283,12 @@
             // cbSheetName
             // 
             this.cbSheetName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbSheetName.Enabled = false;
             this.cbSheetName.FormattingEnabled = true;
             this.cbSheetName.Location = new System.Drawing.Point(97, 46);
             this.cbSheetName.Name = "cbSheetName";
             this.cbSheetName.Size = new System.Drawing.Size(338, 21);
             this.cbSheetName.TabIndex = 13;
+            this.cbSheetName.Visible = false;
             // 
             // lblSheetName
             // 
@@ -287,6 +298,7 @@
             this.lblSheetName.Size = new System.Drawing.Size(79, 13);
             this.lblSheetName.TabIndex = 14;
             this.lblSheetName.Text = "Feuille classeur";
+            this.lblSheetName.Visible = false;
             // 
             // gpFileType
             // 
@@ -361,12 +373,12 @@
             // cbRefSheetName
             // 
             this.cbRefSheetName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRefSheetName.Enabled = false;
             this.cbRefSheetName.FormattingEnabled = true;
             this.cbRefSheetName.Location = new System.Drawing.Point(97, 51);
             this.cbRefSheetName.Name = "cbRefSheetName";
             this.cbRefSheetName.Size = new System.Drawing.Size(338, 21);
             this.cbRefSheetName.TabIndex = 15;
+            this.cbRefSheetName.Visible = false;
             // 
             // btnRefFilePath
             // 
@@ -386,17 +398,7 @@
             this.lblRefFileSheet.Size = new System.Drawing.Size(91, 13);
             this.lblRefFileSheet.TabIndex = 8;
             this.lblRefFileSheet.Text = "Fichier Référénce";
-            // 
-            // rbPipe
-            // 
-            this.rbPipe.AutoSize = true;
-            this.rbPipe.Location = new System.Drawing.Point(6, 42);
-            this.rbPipe.Name = "rbPipe";
-            this.rbPipe.Size = new System.Drawing.Size(51, 17);
-            this.rbPipe.TabIndex = 16;
-            this.rbPipe.TabStop = true;
-            this.rbPipe.Text = "Pipe |";
-            this.rbPipe.UseVisualStyleBackColor = true;
+            this.lblRefFileSheet.Visible = false;
             // 
             // lblStatut
             // 

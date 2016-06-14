@@ -37,3 +37,6 @@ Additional Informations
 Open Excel File in Navigator : https://support.microsoft.com/en-us/kb/982995 (edit: change HKEY_LOCAL_MACHINE with HKEY_CURRENT_USER)
 
 Integrate Excel File in C# Form Application : http://www.codeproject.com/Articles/15760/How-to-Integrate-Excel-in-a-Windows-Form-Applicati
+
+Integrate dll interop Excel dll in exe :
+http://www.claudiobernasconi.ch/2014/02/13/painless-office-interop-using-visual-c-sharp/

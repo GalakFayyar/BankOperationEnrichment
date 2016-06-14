@@ -3,6 +3,7 @@ Bank Operation Enrichment
 
 > **Versions:**
 > v0.1 : initial project
+> v1.0 : First Release
 
 ![](capture.PNG?raw=true)
 
@@ -12,25 +13,24 @@ This short project aims to enrich excel document containing bank operation extra
 
 How does it works ?
 -------------
-The objective is to guess the code operation by analyzing the label of the operation. 
+Based on a reference matrix file, the objective is to guess the code operation by analyzing the label of the operation. 
 Then a comparison is performed to match the correct code and label for the operation.
 
 The Programmation
 -------------
-This project is written in Visual Basic. The main purpose is a VBA excel macro.
+This project is written in C# with .NET 4 Framework. It also use ACE OLEDB database driver to communicate with Microsoft Excel files as databases. It also includes the [bsargos project EmbeddedExcel](http://www.codeproject.com/Articles/15760/How-to-Integrate-Excel-in-a-Windows-Form-Applicati) to preview Microsoft Excel files and set up fields to operate. 
 
 Installation
 -------------
-Open Microsoft Excel, and then press <kbd>ALT + F11</kbd> to access Visual Basic Editor.
-Go to File > Import file and select the macro released in this project (file.bas).
+Thanks to [Fody Costura nuget Package] (https://github.com/Fody/Costura) all dependencies (DLL files) are included in executable generated. No installation required. Of course, Microsoft Excel (Excel.Interop) is required to be able to preview file...
 
 Execution
 -------------
-Simply run the macro by accessing the Display Tab and click on the Macros button. Then, simply select the Macro 'PerformOperation'.
+Simply execute file executable. For best use, it is recommanded to launch as Administrator.
 
 Requirements
 -------------
-In order to run correctly, this macro needs the reference file containing the list of code and label for the common accounts.
+No special requirement (.NET Framework 4, Microsoft Excel, Windows 7)
 
 Additional Informations
 -------------

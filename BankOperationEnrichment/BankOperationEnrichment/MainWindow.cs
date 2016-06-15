@@ -33,6 +33,10 @@ namespace BankOperationEnrichment
 
         #endregion
 
+        #region Private members
+        private string SYSTEM_DECIMAL_SEPARATOR = CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator;
+        #endregion
+
         #region Constructor
 
         public MainWindow()
@@ -40,7 +44,7 @@ namespace BankOperationEnrichment
             arrayData = new HashSet<Data>();
             arrayRefData = new HashSet<AccountReference>();
             InitializeComponent();
-            lblVersion.Text = "BOE v1.2";
+            lblVersion.Text = "BOE v1.3";
             txtRefFilePath.Text = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString();
 
             settings = new Settings();
@@ -58,33 +62,40 @@ namespace BankOperationEnrichment
 
         private void menuBtnSetRefCodeFile_Click(object sender, EventArgs e)
         {
-            openFileDialog1.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
-            openFileDialog1.FileName = string.Empty;
-            DialogResult result = openFileDialog1.ShowDialog();
-            if (result == DialogResult.OK)
+            try
             {
-                fileCodeReferences = openFileDialog1.FileName;
-                txtRefFilePath.Text = fileCodeReferences;
-                if (fileCodeReferences != null)
+                openFileDialog1.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
+                openFileDialog1.FileName = string.Empty;
+                DialogResult result = openFileDialog1.ShowDialog();
+                if (result == DialogResult.OK)
                 {
-                    lblRefFileSheet.Visible = true;
-                    cbRefSheetName.Visible = true;
-                    listSheetsRef = new List<string>();
-                    foreach (var sheet in GetSheetsNameFromWorkbook(fileCodeReferences))
+                    fileCodeReferences = openFileDialog1.FileName;
+                    txtRefFilePath.Text = fileCodeReferences;
+                    if (fileCodeReferences != null)
                     {
-                        // Delete $ at the end and add to list for display
-                        string _sheet = sheet.Replace("'", string.Empty);
-                        listSheetsRef.Add(_sheet.Substring(0, _sheet.Length - 1));
+                        lblRefFileSheet.Visible = true;
+                        cbRefSheetName.Visible = true;
+                        listSheetsRef = new List<string>();
+                        foreach (var sheet in GetSheetsNameFromWorkbook(fileCodeReferences))
+                        {
+                            // Delete $ at the end and add to list for display
+                            string _sheet = sheet.Replace("'", string.Empty);
+                            listSheetsRef.Add(_sheet.Substring(0, _sheet.Length - 1));
+                        }
+                        cbRefSheetName.DataSource = new BindingSource(listSheetsRef, null);
                     }
-                    cbRefSheetName.DataSource = new BindingSource(listSheetsRef, null);
+                    else
+                    {
+                        lblRefFileSheet.Visible = false;
+                        cbRefSheetName.Visible = false;
+                    }
+                    if (fileToOperate != null && fileCodeReferences != null)
+                        btnExecute.Enabled = true;
                 }
-                else
-                {
-                    lblRefFileSheet.Visible = false;
-                    cbRefSheetName.Visible = false;
-                }
-                if (fileToOperate != null && fileCodeReferences != null)
-                    btnExecute.Enabled = true;
+            }
+            catch
+            {
+                return;
             }
         }
 
@@ -173,7 +184,7 @@ namespace BankOperationEnrichment
             }
 
             // Data enrichment
-            DataEnrichment();
+            operationStatus &= DataEnrichment();
             progressBar.Value = 75;
 
             // Export data
@@ -280,35 +291,42 @@ namespace BankOperationEnrichment
             }
         }
 
-        private void DataEnrichment()
+        private bool DataEnrichment()
         {
-            // Var for last inserted date
-            var _lastDate = arrayData.Max(x => x.Date);
-            // Read Data
-            foreach (Data data in arrayData)
+            if (arrayData.Count > 0)
             {
-                var accountRef = arrayRefData.Where(x => data.Libelle.Contains(x.LibelleCompte)).FirstOrDefault();
-                // Enrich data
-                data.NumeroCompte = accountRef != null ? accountRef.NumeroCompte : settings.CPT_ATTENTE;
-                data.CodeJournal = settings.CODE_JOURNAL.ToString();
-            }
+                // Var for last inserted date
+                var _lastDate = arrayData.Max(x => x.Date);
+                // Read Data
+                foreach (Data data in arrayData)
+                {
+                    var accountRef = arrayRefData.Where(x => data.Libelle.Contains(x.LibelleCompte)).FirstOrDefault();
+                    // Enrich data
+                    data.NumeroCompte = accountRef != null ? accountRef.NumeroCompte : settings.CPT_ATTENTE;
+                    data.CodeJournal = settings.CODE_JOURNAL.ToString();
+                }
 
-            // Add Sum data
-            var depenses = Convert.ToDouble(arrayData.Sum(x => x.Depense));
-            arrayData.Add(new Data()
-            {
-                Date = Convert.ToDateTime(arrayData.Max(x => x.Date)),
-                Libelle = settings.dictInfoBanques[GetSelectedTypeBanque()].libelle,
-                NumeroCompte = settings.dictInfoBanques[GetSelectedTypeBanque()].code,
-                Depense = depenses
-            });
-            arrayData.Add(new Data()
-            {
-                Date = Convert.ToDateTime(arrayData.Max(x => x.Date)),
-                Libelle = settings.dictInfoBanques[GetSelectedTypeBanque()].libelle,
-                NumeroCompte = settings.dictInfoBanques[GetSelectedTypeBanque()].code,
-                Recettes = depenses
-            });
+                // Add Sum data
+                var depenses = Convert.ToDouble(arrayData.Sum(x => x.Depense));
+                arrayData.Add(new Data()
+                {
+                    Date = Convert.ToDateTime(arrayData.Max(x => x.Date)),
+                    Libelle = settings.dictInfoBanques[GetSelectedTypeBanque()].libelle,
+                    NumeroCompte = settings.dictInfoBanques[GetSelectedTypeBanque()].code,
+                    Depense = depenses
+                });
+                arrayData.Add(new Data()
+                {
+                    Date = Convert.ToDateTime(arrayData.Max(x => x.Date)),
+                    Libelle = settings.dictInfoBanques[GetSelectedTypeBanque()].libelle,
+                    NumeroCompte = settings.dictInfoBanques[GetSelectedTypeBanque()].code,
+                    Recettes = depenses
+                });
+
+                return true;
+            }
+            else
+                return false;
         }
 
         private string[] GetSheetsNameFromWorkbook(string filePath)
@@ -648,14 +666,13 @@ namespace BankOperationEnrichment
         private double CastStringToDouble(string nombre)
         {
             // Get System decimal separator
-            var separator = CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator;
             double result = 0;
             if (!string.IsNullOrEmpty(nombre))
             {
-                if (separator == ",")
-                    nombre.Replace('.', ',');
-                else if (separator == ".")
-                    nombre.Replace(',', '.');
+                if (SYSTEM_DECIMAL_SEPARATOR == ",")
+                    nombre = nombre.Replace('.', ',');
+                else if (SYSTEM_DECIMAL_SEPARATOR == ".")
+                    nombre = nombre.Replace(',', '.');
 
                 result = Convert.ToDouble(nombre);
             }

@@ -29,6 +29,7 @@ namespace BankOperationEnrichment
         public string keyExcelAccess = "BrowserFlags";
         public object oldValueExcel8 = null;
         public object oldValueExcel12 = null;
+        public Settings settings;
 
         #endregion
 
@@ -37,8 +38,10 @@ namespace BankOperationEnrichment
             arrayData = new HashSet<Data>();
             arrayRefData = new HashSet<AccountReference>();
             InitializeComponent();
-            lblVersion.Text = "BOE v0.1";
+            lblVersion.Text = "BOE v1.2";
             txtRefFilePath.Text = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString();
+
+            settings = new Settings();
         }
 
         #region UI actions
@@ -139,7 +142,7 @@ namespace BankOperationEnrichment
                 case ".csv":
                     // Auto set delimiter
                     rbSemiColon.Checked = true;
-                    operationStatus &= ReadCsvFile(fileToOperate, getDelimiterSelected());
+                    operationStatus &= ReadCsvFile(fileToOperate, GetDelimiterSelected());
                     break;
                 case ".xls":
                 case ".xlsx":
@@ -182,6 +185,11 @@ namespace BankOperationEnrichment
         private void btnRefFilePath_Click(object sender, EventArgs e)
         {
             menuBtnSetRefCodeFile_Click(sender, e);
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            settings.ShowDialog();
         }
 
         #endregion
@@ -270,13 +278,33 @@ namespace BankOperationEnrichment
 
         private void DataEnrichment()
         {
+            // Var for last inserted date
+            var _lastDate = arrayData.Max(x => x.Date);
             // Read Data
             foreach (Data data in arrayData)
             {
                 var accountRef = arrayRefData.Where(x => data.Libelle.Contains(x.LibelleCompte)).FirstOrDefault();
                 // Enrich data
-                data.NumeroCompte = accountRef != null ? accountRef.NumeroCompte : string.Empty;
+                data.NumeroCompte = accountRef != null ? accountRef.NumeroCompte : settings.CPT_ATTENTE;
+                data.CodeJournal = settings.CODE_JOURNAL.ToString();
             }
+
+            // Add Sum data
+            var depenses = Convert.ToDouble(arrayData.Sum(x => x.Depense));
+            arrayData.Add(new Data()
+            {
+                Date = Convert.ToDateTime(arrayData.Max(x => x.Date)),
+                Libelle = settings.dictInfoBanques[GetSelectedTypeBanque()].libelle,
+                NumeroCompte = settings.dictInfoBanques[GetSelectedTypeBanque()].code,
+                Depense = depenses
+            });
+            arrayData.Add(new Data()
+            {
+                Date = Convert.ToDateTime(arrayData.Max(x => x.Date)),
+                Libelle = settings.dictInfoBanques[GetSelectedTypeBanque()].libelle,
+                NumeroCompte = settings.dictInfoBanques[GetSelectedTypeBanque()].code,
+                Recettes = depenses
+            });
         }
 
         private string[] GetSheetsNameFromWorkbook(string filePath)
@@ -412,9 +440,9 @@ namespace BankOperationEnrichment
                         arrayData.Add(new Data()
                         {
                             Date = dataTable.Rows[i].ItemArray[mappingColumns["date"]] != DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i].ItemArray[mappingColumns["date"]]) : new DateTime(),
-                            Libelle = dataTable.Rows[i].ItemArray[mappingColumns["libelle"]] != DBNull.Value ? dataTable.Rows[i].ItemArray[mappingColumns["libelle"]].ToString() : string.Empty,
-                            Depense = dataTable.Rows[i].ItemArray[mappingColumns["depense"]] != DBNull.Value ? Convert.ToDouble(dataTable.Rows[i].ItemArray[mappingColumns["depense"]]) : 0,
-                            Recettes = dataTable.Rows[i].ItemArray[mappingColumns["recette"]] != DBNull.Value ? Convert.ToDouble(dataTable.Rows[i].ItemArray[mappingColumns["recette"]]) : 0
+                            Libelle = dataTable.Rows[i].ItemArray[mappingColumns["libelle"]] != DBNull.Value ? CastAndTruncateStringLibelle(dataTable.Rows[i].ItemArray[mappingColumns["libelle"]]) : string.Empty,
+                            Depense = dataTable.Rows[i].ItemArray[mappingColumns["depense"]] != DBNull.Value ? CastStringToDouble(dataTable.Rows[i].ItemArray[mappingColumns["depense"]].ToString()) : 0,
+                            Recettes = dataTable.Rows[i].ItemArray[mappingColumns["recette"]] != DBNull.Value ? CastStringToDouble(dataTable.Rows[i].ItemArray[mappingColumns["recette"]].ToString()) : 0
                         });
                     }
                 }
@@ -433,7 +461,7 @@ namespace BankOperationEnrichment
             
             // Start reading data
             int startIndex = 0;
-            int delimiter = getDelimiterSelected();
+            int delimiter = GetDelimiterSelected();
             // 9  ==> \t 
             // 10 ==> \n
             // 13 ==> \r
@@ -445,11 +473,11 @@ namespace BankOperationEnrichment
                 // Parsing data
                 if (dataTable.Rows[i].ItemArray[0] != DBNull.Value)
                 {
-                    var montant = Convert.ToDouble(dataTable.Rows[i].ItemArray[0].ToString().Split(_delimiter)[6].ToString());
+                    var montant = CastStringToDouble(dataTable.Rows[i].ItemArray[0].ToString().Split(_delimiter)[6].ToString());
                     arrayData.Add(new Data()
                     {
                         Date = Convert.ToDateTime(dataTable.Rows[i].ItemArray[0].ToString().Split(_delimiter)[2]),
-                        Libelle = dataTable.Rows[i].ItemArray[0].ToString().Split(_delimiter)[3],
+                        Libelle = CastAndTruncateStringLibelle(dataTable.Rows[i].ItemArray[0].ToString().Split(_delimiter)[3]),
                         Depense = montant < 0 ? -1 * montant : 0,
                         Recettes = montant > 0 ? montant : 0
                     });
@@ -468,9 +496,9 @@ namespace BankOperationEnrichment
                     arrayData.Add(new Data()
                     {
                         Date = excelLine.ItemArray[0] != DBNull.Value ? Convert.ToDateTime(excelLine.ItemArray[0]) : new DateTime(),
-                        Libelle = excelLine.ItemArray[2] != DBNull.Value ? excelLine.ItemArray[2].ToString() : string.Empty,
-                        Depense = excelLine.ItemArray[3] != DBNull.Value ? Convert.ToDouble(excelLine.ItemArray[3]) : 0,
-                        Recettes = excelLine.ItemArray[4] != DBNull.Value ? Convert.ToDouble(excelLine.ItemArray[4]) : 0
+                        Libelle = excelLine.ItemArray[2] != DBNull.Value ? CastAndTruncateStringLibelle(excelLine.ItemArray[2]) : string.Empty,
+                        Depense = excelLine.ItemArray[3] != DBNull.Value ? CastStringToDouble(excelLine.ItemArray[3].ToString()) : 0,
+                        Recettes = excelLine.ItemArray[4] != DBNull.Value ? CastStringToDouble(excelLine.ItemArray[4].ToString()) : 0
                     });
 
                 // Look for header line
@@ -507,8 +535,8 @@ namespace BankOperationEnrichment
                             {
                                 Date = (fieldData[0] != "") ? Convert.ToDateTime(fieldData[0].ToString()) : new DateTime(),
                                 Libelle = (fieldData[2] != "") ? fieldData[2].ToString() : string.Empty,
-                                Depense = (fieldData[3] != "") ? Convert.ToDouble(fieldData[3].ToString()) : 0,
-                                Recettes = (fieldData[4] != "") ? Convert.ToDouble(fieldData[4].ToString()) : 0
+                                Depense = CastStringToDouble(fieldData[3].ToString()),
+                                Recettes = CastStringToDouble(fieldData[4].ToString())
                             });
 
                         // Look for header line
@@ -536,7 +564,7 @@ namespace BankOperationEnrichment
             return input == null ? "" : input.ToString();
         }
 
-        private int getDelimiterSelected()
+        private int GetDelimiterSelected()
         {
             if (rbColon.Checked)
                 //return ",";
@@ -554,6 +582,20 @@ namespace BankOperationEnrichment
                 //return "|";
                 return 124;
             return 0;
+        }
+
+        private Settings.TYPEBANQUE GetSelectedTypeBanque()
+        {
+            if (rbSourceCA.Checked)
+                return Settings.TYPEBANQUE.CA;
+            if (rbSourceCM.Checked)
+                return Settings.TYPEBANQUE.CM;
+            //if (rbSourceCMA.Checked)
+            //    return Settings.TYPEBANQUE.CMA;
+            //if (rbSourceBNP.Checked)
+            //    return Settings.TYPEBANQUE.BNP;
+
+            return Settings.TYPEBANQUE.AUTRE;
         }
 
         private bool TestIfKeyExists(string regPath, string valueName)
@@ -596,6 +638,40 @@ namespace BankOperationEnrichment
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Erreur d'écriture", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private double CastStringToDouble(string nombre)
+        {
+            // Get System decimal separator
+            var separator = CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator;
+            double result = 0;
+            if (!string.IsNullOrEmpty(nombre))
+            {
+                if (separator == ",")
+                    nombre.Replace('.', ',');
+                else if (separator == ".")
+                    nombre.Replace(',', '.');
+
+                result = Convert.ToDouble(nombre);
+            }
+            return result;
+        }
+
+        private string CastAndTruncateStringLibelle(object libelle)
+        {
+            try
+            {
+                string _libelle = libelle.ToString();
+                if (_libelle.Length > settings.MAX_LENGTH_LIBELLE)
+                    return _libelle.Substring(0, settings.MAX_LENGTH_LIBELLE);
+                else
+                    return _libelle;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erreur de lecture", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return string.Empty;
             }
         }
 

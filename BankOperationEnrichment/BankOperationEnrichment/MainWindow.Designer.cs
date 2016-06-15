@@ -38,9 +38,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBtnSetRefCodeFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuBtnSetRefCode = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuBtnHelp = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuBtnExit = new System.Windows.Forms.ToolStripMenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.txtRefFilePath = new System.Windows.Forms.TextBox();
             this.rbTab = new System.Windows.Forms.RadioButton();
@@ -134,8 +133,7 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.optionsToolStripMenuItem,
-            this.menuBtnHelp,
-            this.menuBtnExit});
+            this.menuBtnHelp});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(469, 24);
@@ -146,7 +144,7 @@
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuBtnSetRefCodeFile,
-            this.menuBtnSetRefCode});
+            this.settingsToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -158,22 +156,18 @@
             this.menuBtnSetRefCodeFile.Text = "Fichier Codes Référence";
             this.menuBtnSetRefCodeFile.Click += new System.EventHandler(this.menuBtnSetRefCodeFile_Click);
             // 
-            // menuBtnSetRefCode
+            // settingsToolStripMenuItem
             // 
-            this.menuBtnSetRefCode.Name = "menuBtnSetRefCode";
-            this.menuBtnSetRefCode.Size = new System.Drawing.Size(200, 22);
-            this.menuBtnSetRefCode.Text = "Codes de Références";
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.settingsToolStripMenuItem.Text = "Paramétrage";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // menuBtnHelp
             // 
             this.menuBtnHelp.Name = "menuBtnHelp";
             this.menuBtnHelp.Size = new System.Drawing.Size(43, 20);
             this.menuBtnHelp.Text = "Aide";
-            // 
-            // menuBtnExit
-            // 
-            this.menuBtnExit.Name = "menuBtnExit";
-            this.menuBtnExit.Size = new System.Drawing.Size(12, 20);
             // 
             // openFileDialog1
             // 
@@ -464,9 +458,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuBtnSetRefCodeFile;
-        private System.Windows.Forms.ToolStripMenuItem menuBtnSetRefCode;
         private System.Windows.Forms.ToolStripMenuItem menuBtnHelp;
-        private System.Windows.Forms.ToolStripMenuItem menuBtnExit;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.TextBox txtRefFilePath;
         private System.Windows.Forms.RadioButton rbTab;
@@ -489,6 +481,7 @@
         private System.Windows.Forms.Label lblRefFileSheet;
         private System.Windows.Forms.RadioButton rbPipe;
         private System.Windows.Forms.Label lblStatut;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     }
 }
 

@@ -33,6 +33,8 @@ namespace BankOperationEnrichment
 
         #endregion
 
+        #region Constructor
+
         public MainWindow()
         {
             arrayData = new HashSet<Data>();
@@ -43,6 +45,8 @@ namespace BankOperationEnrichment
 
             settings = new Settings();
         }
+
+        #endregion
 
         #region UI actions
 

@@ -37,6 +37,8 @@ namespace BankOperationEnrichment
         public string CODE_JOURNAL = "";
         #endregion
 
+        #region Constructor
+
         public Settings()
         {
             InitializeComponent();
@@ -60,6 +62,10 @@ namespace BankOperationEnrichment
             fillDict();
         }
 
+        #endregion
+
+        #region UI Controls
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             fillDict();
@@ -69,6 +75,15 @@ namespace BankOperationEnrichment
             CPT_ATTENTE = txtCptAttente.Text;
             this.Dispose();
         }
+
+        private void btnQuit_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
+
+        #endregion
+
+        #region Tool functions
 
         private void fillDict()
         {
@@ -80,9 +95,6 @@ namespace BankOperationEnrichment
             dictInfoBanques.Add(TYPEBANQUE.AUTRE, new infoBanque() { code = txtCodeAutre.Text, libelle = txtLblAutre.Text });
         }
 
-        private void btnQuit_Click(object sender, EventArgs e)
-        {
-            this.Dispose();
-        }
+        #endregion
     }
 }

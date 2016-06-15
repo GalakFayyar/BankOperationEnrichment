@@ -30,7 +30,10 @@ Simply execute file executable. For best use, it is recommanded to launch as Adm
 
 Requirements
 -------------
-No special requirement (.NET Framework 4, Microsoft Excel, Windows 7)
+- Package Tool : Microsoft Office Database Connectivity Component (https://www.microsoft.com/fr-fr/download/confirmation.aspx?id=23734)
+- .NET Framework 4.0
+- Microsoft Excel (for preview only, not required for enrichment operation)
+- Windows Environment (of course...)
 
 Additional Informations
 -------------

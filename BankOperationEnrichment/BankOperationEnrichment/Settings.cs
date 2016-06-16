@@ -32,9 +32,9 @@ namespace BankOperationEnrichment
         {
             public string code { get; set; }
             public string libelle { get; set; }
+            public string codeJournal { get; set; }
         }
         public Dictionary<TYPEBANQUE, infoBanque> dictInfoBanques = new Dictionary<TYPEBANQUE, infoBanque>();
-        public string CODE_JOURNAL = "";
         #endregion
 
         #region Constructor
@@ -43,7 +43,6 @@ namespace BankOperationEnrichment
         {
             InitializeComponent();
 
-            txtCodeJournal.Text = CODE_JOURNAL;
             txtCptAttente.Text = CPT_ATTENTE;
             nbLblMaxLen.Value = MAX_LENGTH_LIBELLE;
 
@@ -71,7 +70,6 @@ namespace BankOperationEnrichment
             fillDict();
 
             MAX_LENGTH_LIBELLE = Convert.ToInt32(nbLblMaxLen.Value);
-            CODE_JOURNAL = txtCodeJournal.Text.ToLower();
             CPT_ATTENTE = txtCptAttente.Text;
             this.Dispose();
         }
@@ -88,11 +86,11 @@ namespace BankOperationEnrichment
         private void fillDict()
         {
             dictInfoBanques.Clear();
-            dictInfoBanques.Add(TYPEBANQUE.CA, new infoBanque() { code = txtCodeCA.Text, libelle = txtLblCA.Text });
-            dictInfoBanques.Add(TYPEBANQUE.CM, new infoBanque() { code = txtCodeCM.Text, libelle = txtLblCM.Text });
-            dictInfoBanques.Add(TYPEBANQUE.CMA, new infoBanque() { code = txtCodeCMa.Text, libelle = txtLblCMa.Text });
-            dictInfoBanques.Add(TYPEBANQUE.BNP, new infoBanque() { code = txtCodeBNP.Text, libelle = txtLblBNP.Text });
-            dictInfoBanques.Add(TYPEBANQUE.AUTRE, new infoBanque() { code = txtCodeAutre.Text, libelle = txtLblAutre.Text });
+            dictInfoBanques.Add(TYPEBANQUE.CA, new infoBanque() { code = txtCodeCA.Text, libelle = txtLblCA.Text, codeJournal = txtCptJournalCA.Text });
+            dictInfoBanques.Add(TYPEBANQUE.CM, new infoBanque() { code = txtCodeCM.Text, libelle = txtLblCM.Text, codeJournal = txtCptJournalCM.Text });
+            dictInfoBanques.Add(TYPEBANQUE.CMA, new infoBanque() { code = txtCodeCMa.Text, libelle = txtLblCMa.Text, codeJournal = txtCptJournalCMa.Text });
+            dictInfoBanques.Add(TYPEBANQUE.BNP, new infoBanque() { code = txtCodeBNP.Text, libelle = txtLblBNP.Text, codeJournal = txtCptJournalBNP.Text });
+            dictInfoBanques.Add(TYPEBANQUE.AUTRE, new infoBanque() { code = txtCodeAutre.Text, libelle = txtLblAutre.Text, codeJournal = txtCptJournalAutre.Text });
         }
 
         #endregion

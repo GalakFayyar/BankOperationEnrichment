@@ -218,7 +218,7 @@ namespace BankOperationEnrichment
             string resultFile = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString() + "\\Result.xls";
 
             // Open connection
-            string connString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + resultFile + "; Extended Properties = 'Excel 12.0 Xml;HDR=YES;'";
+            string connString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + resultFile + "; Extended Properties = 'Excel 8.0;HDR=Yes;IMEX=1'";
             //string connString = @"provider = Microsoft.Jet.OLEDB.4.0; data source = " + resultFile + "; Extended Properties = 'Excel 8.0;HDR=Yes;IMEX=1'";
             //string connString = @"Provider = Microsoft.Jet.OLEDB.4.0; Data Source = " + filePath + "; Extended Properties = 'Excel 8.0 Xml;HDR=Yes;IMEX=1'";
 
@@ -266,10 +266,8 @@ namespace BankOperationEnrichment
 
                     // Substring if necessary
                     var _libelle = string.Empty;
-                    if (data.Libelle != null && data.Libelle != string.Empty) {
-                        int len = Convert.ToString(data.Libelle).Length > 256 ? 256 : Convert.ToString(data.Libelle).Length;
-                        _libelle = Convert.ToString(data.Libelle).Substring(0, len - 1);
-                    }
+                    if (data.Libelle != null && data.Libelle != string.Empty)
+                        _libelle = Convert.ToString(data.Libelle).Length > 256 ? Convert.ToString(data.Libelle).Substring(0, Convert.ToString(data.Libelle).Length - 1) : data.Libelle;
                     insertCmdData.Parameters.Add(new OleDbParameter("@libelle", _libelle));
 
                     insertCmdData.Parameters.Add(new OleDbParameter("@depenses", Convert.ToString(data.Depense)));
@@ -300,14 +298,15 @@ namespace BankOperationEnrichment
                 // Read Data
                 foreach (Data data in arrayData)
                 {
-                    var accountRef = arrayRefData.Where(x => data.Libelle.Contains(x.LibelleCompte)).FirstOrDefault();
+                    var accountRef = arrayRefData.Where(x => data.Libelle.ToUpper().Contains(x.LibelleCompte.ToUpper())).FirstOrDefault();
                     // Enrich data
                     data.NumeroCompte = accountRef != null ? accountRef.NumeroCompte : settings.CPT_ATTENTE;
-                    data.CodeJournal = settings.CODE_JOURNAL.ToString();
+                    data.CodeJournal = settings.dictInfoBanques[GetSelectedTypeBanque()].codeJournal.ToString();
                 }
 
                 // Add Sum data
                 var depenses = Convert.ToDouble(arrayData.Sum(x => x.Depense));
+                var recettes = Convert.ToDouble(arrayData.Sum(x => x.Recettes));
                 arrayData.Add(new Data()
                 {
                     Date = Convert.ToDateTime(arrayData.Max(x => x.Date)),
@@ -320,7 +319,7 @@ namespace BankOperationEnrichment
                     Date = Convert.ToDateTime(arrayData.Max(x => x.Date)),
                     Libelle = settings.dictInfoBanques[GetSelectedTypeBanque()].libelle,
                     NumeroCompte = settings.dictInfoBanques[GetSelectedTypeBanque()].code,
-                    Recettes = depenses
+                    Recettes = recettes
                 });
 
                 return true;

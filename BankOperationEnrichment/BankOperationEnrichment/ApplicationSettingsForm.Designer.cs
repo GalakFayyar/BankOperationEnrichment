@@ -1,6 +1,6 @@
 ﻿namespace BankOperationEnrichment
 {
-    partial class Settings
+    partial class ApplicationSettingsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -83,28 +83,28 @@
             this.txtCodeCA.Location = new System.Drawing.Point(102, 60);
             this.txtCodeCA.Name = "txtCodeCA";
             this.txtCodeCA.Size = new System.Drawing.Size(100, 20);
-            this.txtCodeCA.TabIndex = 3;
+            this.txtCodeCA.TabIndex = 2;
             // 
             // txtLblCA
             // 
             this.txtLblCA.Location = new System.Drawing.Point(209, 60);
             this.txtLblCA.Name = "txtLblCA";
             this.txtLblCA.Size = new System.Drawing.Size(203, 20);
-            this.txtLblCA.TabIndex = 4;
+            this.txtLblCA.TabIndex = 3;
             // 
             // txtLblCM
             // 
             this.txtLblCM.Location = new System.Drawing.Point(209, 86);
             this.txtLblCM.Name = "txtLblCM";
             this.txtLblCM.Size = new System.Drawing.Size(203, 20);
-            this.txtLblCM.TabIndex = 7;
+            this.txtLblCM.TabIndex = 6;
             // 
             // txtCodeCM
             // 
             this.txtCodeCM.Location = new System.Drawing.Point(102, 86);
             this.txtCodeCM.Name = "txtCodeCM";
             this.txtCodeCM.Size = new System.Drawing.Size(100, 20);
-            this.txtCodeCM.TabIndex = 6;
+            this.txtCodeCM.TabIndex = 5;
             // 
             // label3
             // 
@@ -120,7 +120,7 @@
             this.txtLblCMa.Location = new System.Drawing.Point(209, 112);
             this.txtLblCMa.Name = "txtLblCMa";
             this.txtLblCMa.Size = new System.Drawing.Size(203, 20);
-            this.txtLblCMa.TabIndex = 10;
+            this.txtLblCMa.TabIndex = 9;
             this.txtLblCMa.Visible = false;
             // 
             // txtCodeCMa
@@ -128,7 +128,7 @@
             this.txtCodeCMa.Location = new System.Drawing.Point(102, 112);
             this.txtCodeCMa.Name = "txtCodeCMa";
             this.txtCodeCMa.Size = new System.Drawing.Size(100, 20);
-            this.txtCodeCMa.TabIndex = 9;
+            this.txtCodeCMa.TabIndex = 8;
             this.txtCodeCMa.Visible = false;
             // 
             // label4
@@ -146,7 +146,7 @@
             this.txtLblBNP.Location = new System.Drawing.Point(209, 138);
             this.txtLblBNP.Name = "txtLblBNP";
             this.txtLblBNP.Size = new System.Drawing.Size(203, 20);
-            this.txtLblBNP.TabIndex = 13;
+            this.txtLblBNP.TabIndex = 12;
             this.txtLblBNP.Visible = false;
             // 
             // txtCodeBNP
@@ -154,7 +154,7 @@
             this.txtCodeBNP.Location = new System.Drawing.Point(102, 138);
             this.txtCodeBNP.Name = "txtCodeBNP";
             this.txtCodeBNP.Size = new System.Drawing.Size(100, 20);
-            this.txtCodeBNP.TabIndex = 12;
+            this.txtCodeBNP.TabIndex = 11;
             this.txtCodeBNP.Visible = false;
             // 
             // label5
@@ -172,14 +172,14 @@
             this.txtLblAutre.Location = new System.Drawing.Point(209, 164);
             this.txtLblAutre.Name = "txtLblAutre";
             this.txtLblAutre.Size = new System.Drawing.Size(203, 20);
-            this.txtLblAutre.TabIndex = 16;
+            this.txtLblAutre.TabIndex = 15;
             // 
             // txtCodeAutre
             // 
             this.txtCodeAutre.Location = new System.Drawing.Point(102, 164);
             this.txtCodeAutre.Name = "txtCodeAutre";
             this.txtCodeAutre.Size = new System.Drawing.Size(100, 20);
-            this.txtCodeAutre.TabIndex = 15;
+            this.txtCodeAutre.TabIndex = 14;
             // 
             // label6
             // 
@@ -204,7 +204,7 @@
             this.txtCptAttente.Location = new System.Drawing.Point(102, 213);
             this.txtCptAttente.Name = "txtCptAttente";
             this.txtCptAttente.Size = new System.Drawing.Size(100, 20);
-            this.txtCptAttente.TabIndex = 20;
+            this.txtCptAttente.TabIndex = 17;
             this.txtCptAttente.Text = "472000";
             // 
             // btnSave
@@ -212,7 +212,7 @@
             this.btnSave.Location = new System.Drawing.Point(362, 211);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.TabIndex = 21;
+            this.btnSave.TabIndex = 18;
             this.btnSave.Text = "Enregistrer";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -222,7 +222,7 @@
             this.btnQuit.Location = new System.Drawing.Point(443, 211);
             this.btnQuit.Name = "btnQuit";
             this.btnQuit.Size = new System.Drawing.Size(75, 23);
-            this.btnQuit.TabIndex = 22;
+            this.btnQuit.TabIndex = 19;
             this.btnQuit.Text = "Annuler";
             this.btnQuit.UseVisualStyleBackColor = true;
             this.btnQuit.Click += new System.EventHandler(this.btnQuit_Click);
@@ -244,21 +244,21 @@
             this.txtCptJournalCA.Location = new System.Drawing.Point(418, 60);
             this.txtCptJournalCA.Name = "txtCptJournalCA";
             this.txtCptJournalCA.Size = new System.Drawing.Size(100, 20);
-            this.txtCptJournalCA.TabIndex = 23;
+            this.txtCptJournalCA.TabIndex = 4;
             // 
             // txtCptJournalCM
             // 
             this.txtCptJournalCM.Location = new System.Drawing.Point(418, 86);
             this.txtCptJournalCM.Name = "txtCptJournalCM";
             this.txtCptJournalCM.Size = new System.Drawing.Size(100, 20);
-            this.txtCptJournalCM.TabIndex = 24;
+            this.txtCptJournalCM.TabIndex = 7;
             // 
             // txtCptJournalCMa
             // 
             this.txtCptJournalCMa.Location = new System.Drawing.Point(418, 112);
             this.txtCptJournalCMa.Name = "txtCptJournalCMa";
             this.txtCptJournalCMa.Size = new System.Drawing.Size(100, 20);
-            this.txtCptJournalCMa.TabIndex = 25;
+            this.txtCptJournalCMa.TabIndex = 10;
             this.txtCptJournalCMa.Visible = false;
             // 
             // txtCptJournalBNP
@@ -266,7 +266,7 @@
             this.txtCptJournalBNP.Location = new System.Drawing.Point(418, 138);
             this.txtCptJournalBNP.Name = "txtCptJournalBNP";
             this.txtCptJournalBNP.Size = new System.Drawing.Size(100, 20);
-            this.txtCptJournalBNP.TabIndex = 26;
+            this.txtCptJournalBNP.TabIndex = 13;
             this.txtCptJournalBNP.Visible = false;
             // 
             // txtCptJournalAutre
@@ -274,7 +274,7 @@
             this.txtCptJournalAutre.Location = new System.Drawing.Point(418, 164);
             this.txtCptJournalAutre.Name = "txtCptJournalAutre";
             this.txtCptJournalAutre.Size = new System.Drawing.Size(100, 20);
-            this.txtCptJournalAutre.TabIndex = 27;
+            this.txtCptJournalAutre.TabIndex = 16;
             // 
             // label7
             // 
@@ -303,7 +303,7 @@
             this.label10.TabIndex = 30;
             this.label10.Text = "Code Journal";
             // 
-            // Settings
+            // ApplicationSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -338,7 +338,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Settings";
+            this.Name = "ApplicationSettingsForm";
             this.Text = "Paramétrage";
             ((System.ComponentModel.ISupportInitialize)(this.nbLblMaxLen)).EndInit();
             this.ResumeLayout(false);

@@ -29,7 +29,8 @@ namespace BankOperationEnrichment
         public string keyExcelAccess = "BrowserFlags";
         public object oldValueExcel8 = null;
         public object oldValueExcel12 = null;
-        public Settings settings;
+        public ApplicationSettings settings;
+        public ApplicationSettingsForm settingsForm;
 
         #endregion
 
@@ -44,10 +45,10 @@ namespace BankOperationEnrichment
             arrayData = new HashSet<Data>();
             arrayRefData = new HashSet<AccountReference>();
             InitializeComponent();
-            lblVersion.Text = "BOE v1.3";
+            lblVersion.Text = "BOE v1.4";
             txtRefFilePath.Text = System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString();
 
-            settings = new Settings();
+            settingsForm = new ApplicationSettingsForm();
         }
 
         #endregion
@@ -204,7 +205,7 @@ namespace BankOperationEnrichment
 
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            settings.ShowDialog();
+            settingsForm.ShowDialog();
         }
 
         #endregion
@@ -301,7 +302,7 @@ namespace BankOperationEnrichment
                     var accountRef = arrayRefData.Where(x => data.Libelle.ToUpper().Contains(x.LibelleCompte.ToUpper())).FirstOrDefault();
                     // Enrich data
                     data.NumeroCompte = accountRef != null ? accountRef.NumeroCompte : settings.CPT_ATTENTE;
-                    data.CodeJournal = settings.dictInfoBanques[GetSelectedTypeBanque()].codeJournal.ToString();
+                    data.CodeJournal = settings.DICO[GetSelectedTypeBanque()].codeJournal.ToString();
                 }
 
                 // Add Sum data
@@ -310,15 +311,15 @@ namespace BankOperationEnrichment
                 arrayData.Add(new Data()
                 {
                     Date = Convert.ToDateTime(arrayData.Max(x => x.Date)),
-                    Libelle = settings.dictInfoBanques[GetSelectedTypeBanque()].libelle,
-                    NumeroCompte = settings.dictInfoBanques[GetSelectedTypeBanque()].code,
+                    Libelle = settings.DICO[GetSelectedTypeBanque()].libelle,
+                    NumeroCompte = settings.DICO[GetSelectedTypeBanque()].code,
                     Depense = depenses
                 });
                 arrayData.Add(new Data()
                 {
                     Date = Convert.ToDateTime(arrayData.Max(x => x.Date)),
-                    Libelle = settings.dictInfoBanques[GetSelectedTypeBanque()].libelle,
-                    NumeroCompte = settings.dictInfoBanques[GetSelectedTypeBanque()].code,
+                    Libelle = settings.DICO[GetSelectedTypeBanque()].libelle,
+                    NumeroCompte = settings.DICO[GetSelectedTypeBanque()].code,
                     Recettes = recettes
                 });
 
@@ -605,18 +606,18 @@ namespace BankOperationEnrichment
             return 0;
         }
 
-        private Settings.TYPEBANQUE GetSelectedTypeBanque()
+        private ApplicationSettings.TYPEBANQUE GetSelectedTypeBanque()
         {
             if (rbSourceCA.Checked)
-                return Settings.TYPEBANQUE.CA;
+                return ApplicationSettings.TYPEBANQUE.CA;
             if (rbSourceCM.Checked)
-                return Settings.TYPEBANQUE.CM;
+                return ApplicationSettings.TYPEBANQUE.CM;
             //if (rbSourceCMA.Checked)
             //    return Settings.TYPEBANQUE.CMA;
             //if (rbSourceBNP.Checked)
             //    return Settings.TYPEBANQUE.BNP;
 
-            return Settings.TYPEBANQUE.AUTRE;
+            return ApplicationSettings.TYPEBANQUE.AUTRE;
         }
 
         private bool TestIfKeyExists(string regPath, string valueName)
@@ -683,8 +684,8 @@ namespace BankOperationEnrichment
             try
             {
                 string _libelle = libelle.ToString();
-                if (_libelle.Length > settings.MAX_LENGTH_LIBELLE)
-                    return _libelle.Substring(0, settings.MAX_LENGTH_LIBELLE);
+                if (_libelle.Length > settings.MAX_CHAR_LIBELLE)
+                    return _libelle.Substring(0, settings.MAX_CHAR_LIBELLE);
                 else
                     return _libelle;
             }

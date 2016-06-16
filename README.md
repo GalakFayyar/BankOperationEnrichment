@@ -2,11 +2,11 @@ Bank Operation Enrichment
 ===================
 
 > **Versions:**
-> v0.1 : initial project
-> v1.0 : First Release
-> v1.1 : Buildin dll
-> v1.2 : x86 compatibility with Interop
-> v1.3 : New Settings UI
+> - v0.1 : initial project
+> - v1.0 : First Release
+> - v1.1 : Buildin dll
+> - v1.2 : x86 compatibility with Interop
+> - v1.3 : New Settings UI
 
 ![](capture.PNG?raw=true)
 

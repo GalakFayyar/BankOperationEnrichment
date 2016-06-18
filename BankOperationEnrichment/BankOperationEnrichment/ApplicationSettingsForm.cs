@@ -19,6 +19,21 @@ namespace BankOperationEnrichment
 
             mySettings = settingsProvider.GetSettings<ApplicationSettings>();
 
+            // If first init : settings file does not exist : create default values
+            if (mySettings.CPT_ATTENTE == null)
+                mySettings.CPT_ATTENTE = "472000";
+            if (mySettings.MAX_CHAR_LIBELLE == 0)
+                mySettings.MAX_CHAR_LIBELLE = 40;
+            if (mySettings.DICO == null)
+            {
+                mySettings.DICO = new System.Collections.Generic.Dictionary<ApplicationSettings.TYPEBANQUE, ApplicationSettings.InfoBank>();
+                mySettings.DICO[ApplicationSettings.TYPEBANQUE.CA] = new ApplicationSettings.InfoBank() { code = string.Empty, codeJournal = string.Empty, libelle = "Cent. CA" };
+                mySettings.DICO[ApplicationSettings.TYPEBANQUE.CM] = new ApplicationSettings.InfoBank() { code = string.Empty, codeJournal = string.Empty, libelle = "Cent. CM" };
+                mySettings.DICO[ApplicationSettings.TYPEBANQUE.CMA] = new ApplicationSettings.InfoBank() { code = string.Empty, codeJournal = string.Empty, libelle = "Cent. CMA" };
+                mySettings.DICO[ApplicationSettings.TYPEBANQUE.BNP] = new ApplicationSettings.InfoBank() { code = string.Empty, codeJournal = string.Empty, libelle = "Cent. BNP" };
+                mySettings.DICO[ApplicationSettings.TYPEBANQUE.AUTRE] = new ApplicationSettings.InfoBank() { code = string.Empty, codeJournal = string.Empty, libelle = "Cent. AUTRE" };
+            }
+
             txtCptAttente.Text = (mySettings.CPT_ATTENTE != null) ? mySettings.CPT_ATTENTE.ToString() : string.Empty;
             nbLblMaxLen.Value = mySettings.MAX_CHAR_LIBELLE;
 

@@ -62,6 +62,8 @@
             this.btnRefFilePath = new System.Windows.Forms.Button();
             this.lblRefFileSheet = new System.Windows.Forms.Label();
             this.lblStatut = new System.Windows.Forms.Label();
+            this.rbSourceCMa = new System.Windows.Forms.RadioButton();
+            this.rbSourceBNP = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             this.groupDelimiter.SuspendLayout();
             this.gpFileType.SuspendLayout();
@@ -296,6 +298,8 @@
             // 
             // gpFileType
             // 
+            this.gpFileType.Controls.Add(this.rbSourceBNP);
+            this.gpFileType.Controls.Add(this.rbSourceCMa);
             this.gpFileType.Controls.Add(this.rbSourceAutre);
             this.gpFileType.Controls.Add(this.rbSourceCM);
             this.gpFileType.Controls.Add(this.rbSourceCA);
@@ -309,7 +313,7 @@
             // rbSourceAutre
             // 
             this.rbSourceAutre.AutoSize = true;
-            this.rbSourceAutre.Location = new System.Drawing.Point(198, 19);
+            this.rbSourceAutre.Location = new System.Drawing.Point(351, 19);
             this.rbSourceAutre.Name = "rbSourceAutre";
             this.rbSourceAutre.Size = new System.Drawing.Size(59, 17);
             this.rbSourceAutre.TabIndex = 2;
@@ -398,13 +402,33 @@
             // 
             this.lblStatut.AutoSize = true;
             this.lblStatut.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatut.Location = new System.Drawing.Point(278, 357);
+            this.lblStatut.Location = new System.Drawing.Point(9, 358);
             this.lblStatut.Name = "lblStatut";
-            this.lblStatut.Size = new System.Drawing.Size(179, 13);
+            this.lblStatut.Size = new System.Drawing.Size(112, 13);
             this.lblStatut.TabIndex = 18;
-            this.lblStatut.Text = "Traitement terminé (Result.xls)";
+            this.lblStatut.Text = "Traitement terminé";
             this.lblStatut.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.lblStatut.Visible = false;
+            // 
+            // rbSourceCMa
+            // 
+            this.rbSourceCMa.AutoSize = true;
+            this.rbSourceCMa.Location = new System.Drawing.Point(198, 19);
+            this.rbSourceCMa.Name = "rbSourceCMa";
+            this.rbSourceCMa.Size = new System.Drawing.Size(94, 17);
+            this.rbSourceCMa.TabIndex = 3;
+            this.rbSourceCMa.Text = "Crédit Maritime";
+            this.rbSourceCMa.UseVisualStyleBackColor = true;
+            // 
+            // rbSourceBNP
+            // 
+            this.rbSourceBNP.AutoSize = true;
+            this.rbSourceBNP.Location = new System.Drawing.Point(298, 19);
+            this.rbSourceBNP.Name = "rbSourceBNP";
+            this.rbSourceBNP.Size = new System.Drawing.Size(47, 17);
+            this.rbSourceBNP.TabIndex = 4;
+            this.rbSourceBNP.Text = "BNP";
+            this.rbSourceBNP.UseVisualStyleBackColor = true;
             // 
             // MainWindow
             // 
@@ -482,6 +506,8 @@
         private System.Windows.Forms.RadioButton rbPipe;
         private System.Windows.Forms.Label lblStatut;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.RadioButton rbSourceBNP;
+        private System.Windows.Forms.RadioButton rbSourceCMa;
     }
 }
 

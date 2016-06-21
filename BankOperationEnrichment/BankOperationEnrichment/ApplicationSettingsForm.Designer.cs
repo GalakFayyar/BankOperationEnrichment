@@ -121,7 +121,6 @@
             this.txtLblCMa.Name = "txtLblCMa";
             this.txtLblCMa.Size = new System.Drawing.Size(203, 20);
             this.txtLblCMa.TabIndex = 9;
-            this.txtLblCMa.Visible = false;
             // 
             // txtCodeCMa
             // 
@@ -129,7 +128,6 @@
             this.txtCodeCMa.Name = "txtCodeCMa";
             this.txtCodeCMa.Size = new System.Drawing.Size(100, 20);
             this.txtCodeCMa.TabIndex = 8;
-            this.txtCodeCMa.Visible = false;
             // 
             // label4
             // 
@@ -139,7 +137,6 @@
             this.label4.Size = new System.Drawing.Size(76, 13);
             this.label4.TabIndex = 8;
             this.label4.Text = "Crédit Maritime";
-            this.label4.Visible = false;
             // 
             // txtLblBNP
             // 
@@ -147,7 +144,6 @@
             this.txtLblBNP.Name = "txtLblBNP";
             this.txtLblBNP.Size = new System.Drawing.Size(203, 20);
             this.txtLblBNP.TabIndex = 12;
-            this.txtLblBNP.Visible = false;
             // 
             // txtCodeBNP
             // 
@@ -155,7 +151,6 @@
             this.txtCodeBNP.Name = "txtCodeBNP";
             this.txtCodeBNP.Size = new System.Drawing.Size(100, 20);
             this.txtCodeBNP.TabIndex = 11;
-            this.txtCodeBNP.Visible = false;
             // 
             // label5
             // 
@@ -165,7 +160,6 @@
             this.label5.Size = new System.Drawing.Size(29, 13);
             this.label5.TabIndex = 11;
             this.label5.Text = "BNP";
-            this.label5.Visible = false;
             // 
             // txtLblAutre
             // 
@@ -259,7 +253,6 @@
             this.txtCptJournalCMa.Name = "txtCptJournalCMa";
             this.txtCptJournalCMa.Size = new System.Drawing.Size(100, 20);
             this.txtCptJournalCMa.TabIndex = 10;
-            this.txtCptJournalCMa.Visible = false;
             // 
             // txtCptJournalBNP
             // 
@@ -267,7 +260,6 @@
             this.txtCptJournalBNP.Name = "txtCptJournalBNP";
             this.txtCptJournalBNP.Size = new System.Drawing.Size(100, 20);
             this.txtCptJournalBNP.TabIndex = 13;
-            this.txtCptJournalBNP.Visible = false;
             // 
             // txtCptJournalAutre
             // 

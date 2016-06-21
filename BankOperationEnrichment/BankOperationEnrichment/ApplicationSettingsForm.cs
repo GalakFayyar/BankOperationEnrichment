@@ -8,7 +8,7 @@ namespace BankOperationEnrichment
     {
         #region Public Members
         SettingsProvider settingsProvider = new SettingsProvider(new RoamingAppDataStorage("BankAccountEnrichment"));
-        ApplicationSettings mySettings;
+        public ApplicationSettings mySettings;
         #endregion
 
         #region Constructor

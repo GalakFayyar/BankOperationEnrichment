@@ -45,7 +45,7 @@ namespace BankOperationEnrichment
             arrayData = new HashSet<Data>();
             arrayRefData = new HashSet<AccountReference>();
             InitializeComponent();
-            lblVersion.Text = "BOE v1.5.1";
+            lblVersion.Text = "BOE v1.5.2";
             txtRefFilePath.Text = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString();
 
             settingsForm = new ApplicationSettingsForm();
@@ -398,7 +398,7 @@ namespace BankOperationEnrichment
         private bool ReadExcelFile(string filePath, string sheetName, bool isRefFile = false)
         {
             OleDbDataAdapter dataAdapter;
-            OleDbConnection connection;
+            OleDbConnection connection = null;
             DataSet dataSet = new DataSet();
             DataTable excelSheet;
 
@@ -444,6 +444,11 @@ namespace BankOperationEnrichment
             {
                 MessageBox.Show(ex.Message, "Erreur de traitement", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
             }
         }
 

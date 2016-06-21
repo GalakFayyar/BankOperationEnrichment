@@ -45,7 +45,7 @@ namespace BankOperationEnrichment
             arrayData = new HashSet<Data>();
             arrayRefData = new HashSet<AccountReference>();
             InitializeComponent();
-            lblVersion.Text = "BOE v1.5";
+            lblVersion.Text = "BOE v1.5.1";
             txtRefFilePath.Text = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString();
 
             settingsForm = new ApplicationSettingsForm();
@@ -205,6 +205,23 @@ namespace BankOperationEnrichment
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             settingsForm.ShowDialog();
+        }
+
+        private void menuBtnHelp_Click(object sender, EventArgs e)
+        {
+            string message = "Outil d'enrichissement des données bancaires.\n\n";
+            message += "Permet d'enrichir les données extraites de comptes d'opérations bancaires \n";
+            message += "avec les éléments d'une matrice comptable. Développé pour fonctionner avec \n";
+            message += "les fichiers csv des banques suivantes (en mode automatique) : \n";
+            message += "- Crédit Agricole\n";
+            message += "- Crédit Mutuel\n";
+            message += "- Crédit Maritime\n";
+            message += "- BNP\n\n";
+            message += "La sélection 'Autre' permet de définir manuellement les colonnes à traiter \n";
+            message += "en indiquant les correspondances dans le fichier excel. Le fichier à intégrer \n";
+            message += "doit être dans ce mode de traitement, un fichier Excel (.xls ou xlsx).\n\n";
+            message += "Droits d'éditions réservés © 2016.\n";
+            MessageBox.Show(message);
         }
 
         #endregion
@@ -792,5 +809,7 @@ namespace BankOperationEnrichment
         }
 
         #endregion
+
+        
     }
 }

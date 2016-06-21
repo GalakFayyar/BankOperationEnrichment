@@ -170,6 +170,7 @@
             this.menuBtnHelp.Name = "menuBtnHelp";
             this.menuBtnHelp.Size = new System.Drawing.Size(43, 20);
             this.menuBtnHelp.Text = "Aide";
+            this.menuBtnHelp.Click += new System.EventHandler(this.menuBtnHelp_Click);
             // 
             // openFileDialog1
             // 

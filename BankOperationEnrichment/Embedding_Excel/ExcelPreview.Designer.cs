@@ -29,8 +29,10 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.txtStartLineNumber = new System.Windows.Forms.TextBox();
+            this.lblStartLineNumber = new System.Windows.Forms.Label();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnContinue = new System.Windows.Forms.Button();
             this.gbMapping = new System.Windows.Forms.GroupBox();
             this.txtColRecette = new System.Windows.Forms.TextBox();
             this.lblColRecette = new System.Windows.Forms.Label();
@@ -40,11 +42,10 @@
             this.lblColLibelle = new System.Windows.Forms.Label();
             this.txtColDateOperation = new System.Windows.Forms.TextBox();
             this.lblColDate = new System.Windows.Forms.Label();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnContinue = new System.Windows.Forms.Button();
             this.excelWrapper1 = new EmbeddedExcel.ExcelWrapper();
-            this.lblStartLineNumber = new System.Windows.Forms.Label();
-            this.txtStartLineNumber = new System.Windows.Forms.TextBox();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.lblColNumOperation = new System.Windows.Forms.Label();
+            this.txtColNumOperation = new System.Windows.Forms.TextBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -64,33 +65,56 @@
             this.splitContainer1.Panel1.Controls.Add(this.btnCancel);
             this.splitContainer1.Panel1.Controls.Add(this.btnContinue);
             this.splitContainer1.Panel1.Controls.Add(this.gbMapping);
-            this.splitContainer1.Panel1.Controls.Add(this.checkBox1);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.excelWrapper1);
-            this.splitContainer1.Size = new System.Drawing.Size(713, 246);
+            this.splitContainer1.Size = new System.Drawing.Size(713, 302);
             this.splitContainer1.SplitterDistance = 195;
             this.splitContainer1.TabIndex = 1;
             // 
-            // checkBox1
+            // txtStartLineNumber
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(12, 12);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(121, 17);
-            this.checkBox1.TabIndex = 1;
-            this.checkBox1.Text = "CommandBar visible";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.txtStartLineNumber.Location = new System.Drawing.Point(142, 176);
+            this.txtStartLineNumber.MaxLength = 2;
+            this.txtStartLineNumber.Name = "txtStartLineNumber";
+            this.txtStartLineNumber.Size = new System.Drawing.Size(33, 20);
+            this.txtStartLineNumber.TabIndex = 8;
+            this.txtStartLineNumber.Text = "2";
             // 
-            // openFileDialog1
+            // lblStartLineNumber
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.Filter = "Excel Files | *.xls";
+            this.lblStartLineNumber.AutoSize = true;
+            this.lblStartLineNumber.Location = new System.Drawing.Point(15, 179);
+            this.lblStartLineNumber.Name = "lblStartLineNumber";
+            this.lblStartLineNumber.Size = new System.Drawing.Size(81, 13);
+            this.lblStartLineNumber.TabIndex = 1;
+            this.lblStartLineNumber.Text = "Ligne de départ";
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(102, 208);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 7;
+            this.btnCancel.Text = "Annuler";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnContinue
+            // 
+            this.btnContinue.Location = new System.Drawing.Point(21, 208);
+            this.btnContinue.Name = "btnContinue";
+            this.btnContinue.Size = new System.Drawing.Size(75, 23);
+            this.btnContinue.TabIndex = 6;
+            this.btnContinue.Text = "Valider";
+            this.btnContinue.UseVisualStyleBackColor = true;
+            this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
             // 
             // gbMapping
             // 
+            this.gbMapping.Controls.Add(this.txtColNumOperation);
+            this.gbMapping.Controls.Add(this.lblColNumOperation);
             this.gbMapping.Controls.Add(this.txtColRecette);
             this.gbMapping.Controls.Add(this.lblColRecette);
             this.gbMapping.Controls.Add(this.txtColDepense);
@@ -99,16 +123,16 @@
             this.gbMapping.Controls.Add(this.lblColLibelle);
             this.gbMapping.Controls.Add(this.txtColDateOperation);
             this.gbMapping.Controls.Add(this.lblColDate);
-            this.gbMapping.Location = new System.Drawing.Point(11, 35);
+            this.gbMapping.Location = new System.Drawing.Point(11, 12);
             this.gbMapping.Name = "gbMapping";
-            this.gbMapping.Size = new System.Drawing.Size(172, 135);
+            this.gbMapping.Size = new System.Drawing.Size(172, 155);
             this.gbMapping.TabIndex = 4;
             this.gbMapping.TabStop = false;
             this.gbMapping.Text = "Mapping des colonnes";
             // 
             // txtColRecette
             // 
-            this.txtColRecette.Location = new System.Drawing.Point(133, 108);
+            this.txtColRecette.Location = new System.Drawing.Point(133, 123);
             this.txtColRecette.MaxLength = 1;
             this.txtColRecette.Name = "txtColRecette";
             this.txtColRecette.Size = new System.Drawing.Size(33, 20);
@@ -118,7 +142,7 @@
             // lblColRecette
             // 
             this.lblColRecette.AutoSize = true;
-            this.lblColRecette.Location = new System.Drawing.Point(6, 111);
+            this.lblColRecette.Location = new System.Drawing.Point(6, 126);
             this.lblColRecette.Name = "lblColRecette";
             this.lblColRecette.Size = new System.Drawing.Size(45, 13);
             this.lblColRecette.TabIndex = 7;
@@ -126,7 +150,7 @@
             // 
             // txtColDepense
             // 
-            this.txtColDepense.Location = new System.Drawing.Point(133, 79);
+            this.txtColDepense.Location = new System.Drawing.Point(133, 97);
             this.txtColDepense.MaxLength = 1;
             this.txtColDepense.Name = "txtColDepense";
             this.txtColDepense.Size = new System.Drawing.Size(33, 20);
@@ -136,7 +160,7 @@
             // lblColDepense
             // 
             this.lblColDepense.AutoSize = true;
-            this.lblColDepense.Location = new System.Drawing.Point(6, 82);
+            this.lblColDepense.Location = new System.Drawing.Point(7, 100);
             this.lblColDepense.Name = "lblColDepense";
             this.lblColDepense.Size = new System.Drawing.Size(50, 13);
             this.lblColDepense.TabIndex = 5;
@@ -144,7 +168,7 @@
             // 
             // txtColLibOperation
             // 
-            this.txtColLibOperation.Location = new System.Drawing.Point(133, 49);
+            this.txtColLibOperation.Location = new System.Drawing.Point(133, 45);
             this.txtColLibOperation.MaxLength = 1;
             this.txtColLibOperation.Name = "txtColLibOperation";
             this.txtColLibOperation.Size = new System.Drawing.Size(33, 20);
@@ -154,7 +178,7 @@
             // lblColLibelle
             // 
             this.lblColLibelle.AutoSize = true;
-            this.lblColLibelle.Location = new System.Drawing.Point(6, 52);
+            this.lblColLibelle.Location = new System.Drawing.Point(6, 48);
             this.lblColLibelle.Name = "lblColLibelle";
             this.lblColLibelle.Size = new System.Drawing.Size(86, 13);
             this.lblColLibelle.TabIndex = 3;
@@ -178,58 +202,42 @@
             this.lblColDate.TabIndex = 1;
             this.lblColDate.Text = "Date Opération";
             // 
-            // btnCancel
-            // 
-            this.btnCancel.Location = new System.Drawing.Point(104, 208);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 7;
-            this.btnCancel.Text = "Annuler";
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // btnContinue
-            // 
-            this.btnContinue.Location = new System.Drawing.Point(23, 208);
-            this.btnContinue.Name = "btnContinue";
-            this.btnContinue.Size = new System.Drawing.Size(75, 23);
-            this.btnContinue.TabIndex = 6;
-            this.btnContinue.Text = "Valider";
-            this.btnContinue.UseVisualStyleBackColor = true;
-            this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
-            // 
             // excelWrapper1
             // 
             this.excelWrapper1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.excelWrapper1.Location = new System.Drawing.Point(0, 0);
             this.excelWrapper1.Name = "excelWrapper1";
-            this.excelWrapper1.Size = new System.Drawing.Size(514, 246);
+            this.excelWrapper1.Size = new System.Drawing.Size(514, 302);
             this.excelWrapper1.TabIndex = 0;
             this.excelWrapper1.ToolBarVisible = false;
             // 
-            // lblStartLineNumber
+            // openFileDialog1
             // 
-            this.lblStartLineNumber.AutoSize = true;
-            this.lblStartLineNumber.Location = new System.Drawing.Point(17, 179);
-            this.lblStartLineNumber.Name = "lblStartLineNumber";
-            this.lblStartLineNumber.Size = new System.Drawing.Size(81, 13);
-            this.lblStartLineNumber.TabIndex = 1;
-            this.lblStartLineNumber.Text = "Ligne de départ";
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "Excel Files | *.xls";
             // 
-            // txtStartLineNumber
+            // lblColNumOperation
             // 
-            this.txtStartLineNumber.Location = new System.Drawing.Point(144, 176);
-            this.txtStartLineNumber.MaxLength = 2;
-            this.txtStartLineNumber.Name = "txtStartLineNumber";
-            this.txtStartLineNumber.Size = new System.Drawing.Size(33, 20);
-            this.txtStartLineNumber.TabIndex = 8;
-            this.txtStartLineNumber.Text = "2";
+            this.lblColNumOperation.AutoSize = true;
+            this.lblColNumOperation.Location = new System.Drawing.Point(6, 74);
+            this.lblColNumOperation.Name = "lblColNumOperation";
+            this.lblColNumOperation.Size = new System.Drawing.Size(93, 13);
+            this.lblColNumOperation.TabIndex = 9;
+            this.lblColNumOperation.Text = "Numéro Opération";
+            // 
+            // txtColNumOperation
+            // 
+            this.txtColNumOperation.Location = new System.Drawing.Point(133, 71);
+            this.txtColNumOperation.Name = "txtColNumOperation";
+            this.txtColNumOperation.Size = new System.Drawing.Size(33, 20);
+            this.txtColNumOperation.TabIndex = 10;
+            this.txtColNumOperation.Text = "D";
             // 
             // ExcelPreview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(713, 246);
+            this.ClientSize = new System.Drawing.Size(713, 302);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "ExcelPreview";
@@ -249,7 +257,6 @@
         private ExcelWrapper excelWrapper1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.GroupBox gbMapping;
         private System.Windows.Forms.TextBox txtColRecette;
         private System.Windows.Forms.Label lblColRecette;
@@ -263,6 +270,8 @@
         private System.Windows.Forms.Button btnContinue;
         private System.Windows.Forms.TextBox txtStartLineNumber;
         private System.Windows.Forms.Label lblStartLineNumber;
+        private System.Windows.Forms.TextBox txtColNumOperation;
+        private System.Windows.Forms.Label lblColNumOperation;
     }
 }
 

@@ -484,6 +484,7 @@ namespace BankOperationEnrichment
                         {
                             Date = dataTable.Rows[i].ItemArray[mappingColumns["date"]] != DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i].ItemArray[mappingColumns["date"]]) : new DateTime(),
                             Libelle = dataTable.Rows[i].ItemArray[mappingColumns["libelle"]] != DBNull.Value ? CastAndTruncateStringLibelle(dataTable.Rows[i].ItemArray[mappingColumns["libelle"]]) : string.Empty,
+                            NumeroOperation = dataTable.Rows[i].ItemArray[mappingColumns["numOperation"]] != DBNull.Value ? CastAndTruncateStringLibelle(dataTable.Rows[i].ItemArray[mappingColumns["numOperation"]]).Trim() : string.Empty,
                             Depense = dataTable.Rows[i].ItemArray[mappingColumns["depense"]] != DBNull.Value ? CastStringToDouble(dataTable.Rows[i].ItemArray[mappingColumns["depense"]].ToString()) : 0,
                             Recettes = dataTable.Rows[i].ItemArray[mappingColumns["recette"]] != DBNull.Value ? CastStringToDouble(dataTable.Rows[i].ItemArray[mappingColumns["recette"]].ToString()) : 0
                         });
@@ -809,7 +810,5 @@ namespace BankOperationEnrichment
         }
 
         #endregion
-
-        
     }
 }

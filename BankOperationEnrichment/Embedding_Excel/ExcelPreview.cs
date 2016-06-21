@@ -24,10 +24,6 @@ namespace EmbeddedExcel
 			this.excelWrapper1.OpenFile(this.openFileDialog1.FileName);
 		}
 
-		private void checkBox1_CheckedChanged(object sender,EventArgs e) {
-			this.excelWrapper1.ToolBarVisible=this.checkBox1.Checked;
-		}
-
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Dispose();
@@ -40,6 +36,7 @@ namespace EmbeddedExcel
                 mappingColumns = new Dictionary<string, int>();
                 mappingColumns.Add("date", ConvertCharToNum(txtColDateOperation.Text));
                 mappingColumns.Add("libelle", ConvertCharToNum(txtColLibOperation.Text));
+                mappingColumns.Add("numOperation", ConvertCharToNum(txtColNumOperation.Text));
                 mappingColumns.Add("depense", ConvertCharToNum(txtColDepense.Text));
                 mappingColumns.Add("recette", ConvertCharToNum(txtColRecette.Text));
 

@@ -316,10 +316,14 @@ namespace BankOperationEnrichment
                 // Read Data
                 foreach (Data data in arrayData)
                 {
-                    var accountRef = arrayRefData.Where(x => data.Libelle.ToUpper().Contains(x.LibelleCompte.ToUpper())).FirstOrDefault();
-                    // Enrich data
-                    data.NumeroCompte = accountRef != null ? accountRef.NumeroCompte : settings.CPT_ATTENTE;
-                    data.CodeJournal = settings.DICO[GetSelectedTypeBanque()].codeJournal.ToString();
+                    var accountRef = arrayRefData.Where(x => data.Libelle.ToUpper().Contains(x.LibelleCompte.ToUpper())).ToList();
+                    if (accountRef.Count() > 0)
+                    {
+                        var matchingElement = accountRef.Count() > 1 ? accountRef.OrderByDescending(x => x.NumeroCompte.Length).FirstOrDefault() : accountRef.FirstOrDefault();
+                        // Enrich data
+                        data.NumeroCompte = accountRef != null ? matchingElement.NumeroCompte : settings.CPT_ATTENTE;
+                        data.CodeJournal = settings.DICO[GetSelectedTypeBanque()].codeJournal.ToString();
+                    }
                 }
 
                 // Add Sum data

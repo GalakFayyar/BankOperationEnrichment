@@ -7,6 +7,8 @@ Bank Operation Enrichment
 > - v1.1 : Buildin dll
 > - v1.2 : x86 compatibility with Interop
 > - v1.3 : New Settings UI
+> - v1.4 & v1.5 : Bug fixes
+> - v1.6 : New label match (CP25 & CP251 CP252)
 
 ![](capture.PNG?raw=true)
 

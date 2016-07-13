@@ -45,7 +45,7 @@ namespace BankOperationEnrichment
             arrayData = new HashSet<Data>();
             arrayRefData = new HashSet<AccountReference>();
             InitializeComponent();
-            lblVersion.Text = "BOE v1.6.0";
+            lblVersion.Text = "BOE v1.6.1";
             txtRefFilePath.Text = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString();
 
             settingsForm = new ApplicationSettingsForm();
@@ -317,13 +317,10 @@ namespace BankOperationEnrichment
                 foreach (Data data in arrayData)
                 {
                     var accountRef = arrayRefData.Where(x => data.Libelle.ToUpper().Contains(x.LibelleCompte.ToUpper())).ToList();
-                    if (accountRef.Count() > 0)
-                    {
-                        var matchingElement = accountRef.Count() > 1 ? accountRef.OrderByDescending(x => x.NumeroCompte.Length).FirstOrDefault() : accountRef.FirstOrDefault();
-                        // Enrich data
-                        data.NumeroCompte = accountRef != null ? matchingElement.NumeroCompte : settings.CPT_ATTENTE;
-                        data.CodeJournal = settings.DICO[GetSelectedTypeBanque()].codeJournal.ToString();
-                    }
+                    var matchingElement = accountRef.Count() > 1 ? accountRef.OrderByDescending(x => x.NumeroCompte.Length).FirstOrDefault() : accountRef.FirstOrDefault();
+                    // Enrich data
+                    data.NumeroCompte = matchingElement != null ? matchingElement.NumeroCompte : settings.CPT_ATTENTE;
+                    data.CodeJournal = settings.DICO[GetSelectedTypeBanque()].codeJournal.ToString();
                 }
 
                 // Add Sum data
@@ -805,11 +802,7 @@ namespace BankOperationEnrichment
         {
             try
             {
-                string _libelle = libelle.ToString();
-                if (_libelle.Length > settings.MAX_CHAR_LIBELLE)
-                    return _libelle.Substring(0, settings.MAX_CHAR_LIBELLE);
-                else
-                    return _libelle;
+                return libelle.ToString();
             }
             catch(Exception ex)
             {

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Globalization;
 using System.IO;
 using CsvHelper;
+using System.Text.RegularExpressions;
 
 namespace BankOperationEnrichment
 {
@@ -45,7 +46,7 @@ namespace BankOperationEnrichment
             arrayData = new HashSet<Data>();
             arrayRefData = new HashSet<AccountReference>();
             InitializeComponent();
-            lblVersion.Text = "BOE v1.6.1";
+            lblVersion.Text = "BOE v1.6.2";
             txtRefFilePath.Text = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString();
 
             settingsForm = new ApplicationSettingsForm();
@@ -205,6 +206,7 @@ namespace BankOperationEnrichment
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             settingsForm.ShowDialog();
+            settings = settingsForm.mySettings;
         }
 
         private void menuBtnHelp_Click(object sender, EventArgs e)
@@ -265,16 +267,11 @@ namespace BankOperationEnrichment
                 createcmdData.CommandText = @"CREATE TABLE Donnees (DATE_OPERATION char(50), CODE_JOURNAL char(50), NUM_COMPTE char(50), NUM_OPERATION char(50), LIBELLE char(255), DEPENSES char(50), RECETTES char(50))";
                 createcmdData.ExecuteNonQuery();
 
+                Regex pattern = new Regex("[,.]");
+
                 foreach (Data data in arrayData)
                 {
-                    requete = string.Format("INSERT INTO [Donnees$] VALUES (@date, @codeJournal, @numeroCompte, @numeroOperation, @libelle, @depenses, @recettes);",
-                        data.Date.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
-                        TryConvertToString(data.CodeJournal),
-                        TryConvertToString(data.NumeroCompte),
-                        TryConvertToString(data.NumeroOperation),
-                        Convert.ToString(data.Libelle),
-                        Convert.ToString(data.Depense),
-                        Convert.ToString(data.Recettes));
+                    requete = string.Format("INSERT INTO [Donnees$] VALUES (@date, @codeJournal, @numeroCompte, @numeroOperation, @libelle, @depenses, @recettes);");
 
                     OleDbCommand insertCmdData = new OleDbCommand(requete, connection);
                     insertCmdData.Parameters.Add(new OleDbParameter("@date", data.Date.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture)));
@@ -288,8 +285,8 @@ namespace BankOperationEnrichment
                         _libelle = Convert.ToString(data.Libelle).Length > settings.MAX_CHAR_LIBELLE ? Convert.ToString(data.Libelle).Substring(0, settings.MAX_CHAR_LIBELLE) : data.Libelle;
                     insertCmdData.Parameters.Add(new OleDbParameter("@libelle", _libelle));
 
-                    insertCmdData.Parameters.Add(new OleDbParameter("@depenses", Convert.ToString(data.Depense)));
-                    insertCmdData.Parameters.Add(new OleDbParameter("@recettes", Convert.ToString(data.Recettes)));
+                    insertCmdData.Parameters.Add(new OleDbParameter("@depenses", pattern.Replace(Convert.ToString(data.Depense), settings.DECIMAL_SEPARATOR)));
+                    insertCmdData.Parameters.Add(new OleDbParameter("@recettes", pattern.Replace(Convert.ToString(data.Recettes), settings.DECIMAL_SEPARATOR)));
                     insertCmdData.ExecuteNonQuery();
                 }
 

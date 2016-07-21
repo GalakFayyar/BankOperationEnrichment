@@ -23,5 +23,6 @@ namespace BankOperationEnrichment
         public Dictionary<TYPEBANQUE, InfoBank> DICO { get; set; }
         public int MAX_CHAR_LIBELLE { get; set; }
         public string CPT_ATTENTE { get; set; }
+        public string DECIMAL_SEPARATOR { get; set; }
     }
 }

@@ -57,13 +57,17 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.rbDecimalVirgule = new System.Windows.Forms.RadioButton();
+            this.rbDecimalPoint = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.nbLblMaxLen)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 9);
+            this.label1.Location = new System.Drawing.Point(10, 20);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(148, 13);
             this.label1.TabIndex = 0;
@@ -223,7 +227,7 @@
             // 
             // nbLblMaxLen
             // 
-            this.nbLblMaxLen.Location = new System.Drawing.Point(164, 7);
+            this.nbLblMaxLen.Location = new System.Drawing.Point(164, 18);
             this.nbLblMaxLen.Name = "nbLblMaxLen";
             this.nbLblMaxLen.Size = new System.Drawing.Size(38, 20);
             this.nbLblMaxLen.TabIndex = 1;
@@ -295,11 +299,46 @@
             this.label10.TabIndex = 30;
             this.label10.Text = "Code Journal";
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.rbDecimalPoint);
+            this.groupBox1.Controls.Add(this.rbDecimalVirgule);
+            this.groupBox1.Location = new System.Drawing.Point(212, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(305, 35);
+            this.groupBox1.TabIndex = 31;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Séparateur décimal";
+            // 
+            // rbDecimalVirgule
+            // 
+            this.rbDecimalVirgule.AutoSize = true;
+            this.rbDecimalVirgule.Checked = true;
+            this.rbDecimalVirgule.Location = new System.Drawing.Point(6, 12);
+            this.rbDecimalVirgule.Name = "rbDecimalVirgule";
+            this.rbDecimalVirgule.Size = new System.Drawing.Size(57, 17);
+            this.rbDecimalVirgule.TabIndex = 1;
+            this.rbDecimalVirgule.TabStop = true;
+            this.rbDecimalVirgule.Text = "Virgule";
+            this.rbDecimalVirgule.UseVisualStyleBackColor = true;
+            // 
+            // rbDecimalPoint
+            // 
+            this.rbDecimalPoint.AutoSize = true;
+            this.rbDecimalPoint.Location = new System.Drawing.Point(69, 12);
+            this.rbDecimalPoint.Name = "rbDecimalPoint";
+            this.rbDecimalPoint.Size = new System.Drawing.Size(49, 17);
+            this.rbDecimalPoint.TabIndex = 2;
+            this.rbDecimalPoint.TabStop = true;
+            this.rbDecimalPoint.Text = "Point";
+            this.rbDecimalPoint.UseVisualStyleBackColor = true;
+            // 
             // ApplicationSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(529, 244);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label7);
@@ -333,6 +372,8 @@
             this.Name = "ApplicationSettingsForm";
             this.Text = "Paramétrage";
             ((System.ComponentModel.ISupportInitialize)(this.nbLblMaxLen)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -369,5 +410,8 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.RadioButton rbDecimalPoint;
+        private System.Windows.Forms.RadioButton rbDecimalVirgule;
     }
 }

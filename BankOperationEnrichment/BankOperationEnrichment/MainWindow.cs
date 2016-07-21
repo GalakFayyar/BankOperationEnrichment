@@ -46,7 +46,7 @@ namespace BankOperationEnrichment
             arrayData = new HashSet<Data>();
             arrayRefData = new HashSet<AccountReference>();
             InitializeComponent();
-            lblVersion.Text = "BOE v1.6.2";
+            lblVersion.Text = "BOE v1.6.3";
             txtRefFilePath.Text = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString();
 
             settingsForm = new ApplicationSettingsForm();
@@ -329,9 +329,9 @@ namespace BankOperationEnrichment
                     data.CodeJournal = settings.DICO[GetSelectedTypeBanque()].codeJournal.ToString();
                 }
 
-                // Add Sum data
-                var depenses = Convert.ToDouble(arrayData.Sum(x => x.Depense));
-                var recettes = Convert.ToDouble(arrayData.Sum(x => x.Recettes));
+                // Add Sum data (inverted : ok)
+                var depenses = Math.Round(Convert.ToDouble(arrayData.Sum(x => x.Recettes)), 2);
+                var recettes = Math.Round(Convert.ToDouble(arrayData.Sum(x => x.Depense)), 2);
                 arrayData.Add(new Data()
                 {
                     Date = Convert.ToDateTime(arrayData.Max(x => x.Date)),

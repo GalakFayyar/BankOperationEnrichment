@@ -33,13 +33,10 @@ namespace BankOperationEnrichment
                 mySettings.DICO[ApplicationSettings.TYPEBANQUE.BNP] = new ApplicationSettings.InfoBank() { code = string.Empty, codeJournal = string.Empty, libelle = "Cent. BNP" };
                 mySettings.DICO[ApplicationSettings.TYPEBANQUE.AUTRE] = new ApplicationSettings.InfoBank() { code = string.Empty, codeJournal = string.Empty, libelle = "Cent. AUTRE" };
             }
-            if (mySettings.DECIMAL_SEPARATOR == null)
-                mySettings.DECIMAL_SEPARATOR = ",";
-            else
-            {
-                rbDecimalPoint.Checked = mySettings.DECIMAL_SEPARATOR == ".";
-                rbDecimalVirgule.Checked = mySettings.DECIMAL_SEPARATOR == ",";
-            }
+
+            rbDecimalAuto.Checked = mySettings.AUTO_DECIMAL_SEPARATOR;
+            rbDecimalPoint.Checked = mySettings.DECIMAL_SEPARATOR == ".";
+            rbDecimalVirgule.Checked = mySettings.DECIMAL_SEPARATOR == ",";
 
             txtCptAttente.Text = (mySettings.CPT_ATTENTE != null) ? mySettings.CPT_ATTENTE.ToString() : string.Empty;
             nbLblMaxLen.Value = mySettings.MAX_CHAR_LIBELLE;
@@ -87,7 +84,8 @@ namespace BankOperationEnrichment
             mySettings = new ApplicationSettings{
                 CPT_ATTENTE = txtCptAttente.Text.ToString(),
                 MAX_CHAR_LIBELLE = Convert.ToInt32(nbLblMaxLen.Value),
-                DECIMAL_SEPARATOR = (rbDecimalPoint.Checked) ? "." : ","
+                DECIMAL_SEPARATOR = (rbDecimalPoint.Checked) ? "." : (rbDecimalVirgule.Checked) ? "," : null,
+                AUTO_DECIMAL_SEPARATOR = rbDecimalAuto.Checked
             };
             mySettings.DICO = new System.Collections.Generic.Dictionary<ApplicationSettings.TYPEBANQUE, ApplicationSettings.InfoBank>();
             mySettings.DICO.Add(ApplicationSettings.TYPEBANQUE.CA, new ApplicationSettings.InfoBank() { code = txtCodeCA.Text, libelle = txtLblCA.Text, codeJournal = txtCptJournalCA.Text });

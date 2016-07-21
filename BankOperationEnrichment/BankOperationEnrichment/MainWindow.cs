@@ -237,7 +237,7 @@ namespace BankOperationEnrichment
             string resultFile = string.Concat(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString(), "\\enrichi_", Path.GetFileNameWithoutExtension(fileToOperate).ToString().Replace(' ', '_'), ".xls");
 
             // Open connection
-            string connString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + resultFile + "; Extended Properties = 'Excel 8.0;HDR=YES;'";
+            string connString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + resultFile + "; Extended Properties = 'Excel 8.0;HDR=YES'";
             //string connString = @"provider = Microsoft.Jet.OLEDB.4.0; data source = " + resultFile + "; Extended Properties = 'Excel 8.0;HDR=Yes;IMEX=1'";
             //string connString = @"Provider = Microsoft.Jet.OLEDB.4.0; Data Source = " + filePath + "; Extended Properties = 'Excel 8.0 Xml;HDR=Yes;IMEX=1'";
 
@@ -264,7 +264,9 @@ namespace BankOperationEnrichment
                 // Create Table
                 OleDbCommand createcmdData = new OleDbCommand(requete, connection);
                 createcmdData.Connection = connection;
-                createcmdData.CommandText = @"CREATE TABLE Donnees (DATE_OPERATION char(50), CODE_JOURNAL char(50), NUM_COMPTE char(50), NUM_OPERATION char(50), LIBELLE char(255), DEPENSES char(50), RECETTES char(50))";
+                string cmdTxtAuto = @"CREATE TABLE Donnees (DATE_OPERATION char(50), CODE_JOURNAL char(50), NUM_COMPTE char(50), NUM_OPERATION char(50), LIBELLE char(255), DEPENSES double, RECETTES double)";
+                string cmdTxt = @"CREATE TABLE Donnees (DATE_OPERATION char(50), CODE_JOURNAL char(50), NUM_COMPTE char(50), NUM_OPERATION char(50), LIBELLE char(255), DEPENSES char(50), RECETTES char(50))";
+                createcmdData.CommandText = (settings.AUTO_DECIMAL_SEPARATOR) ? cmdTxtAuto : cmdTxt;
                 createcmdData.ExecuteNonQuery();
 
                 Regex pattern = new Regex("[,.]");
@@ -285,8 +287,15 @@ namespace BankOperationEnrichment
                         _libelle = Convert.ToString(data.Libelle).Length > settings.MAX_CHAR_LIBELLE ? Convert.ToString(data.Libelle).Substring(0, settings.MAX_CHAR_LIBELLE) : data.Libelle;
                     insertCmdData.Parameters.Add(new OleDbParameter("@libelle", _libelle));
 
-                    insertCmdData.Parameters.Add(new OleDbParameter("@depenses", pattern.Replace(Convert.ToString(data.Depense), settings.DECIMAL_SEPARATOR)));
-                    insertCmdData.Parameters.Add(new OleDbParameter("@recettes", pattern.Replace(Convert.ToString(data.Recettes), settings.DECIMAL_SEPARATOR)));
+                    string _depenses = Convert.ToString(data.Depense);
+                    string _recettes = Convert.ToString(data.Recettes);
+                    if (settings.DECIMAL_SEPARATOR != null)
+                        _depenses = pattern.Replace(_depenses, settings.DECIMAL_SEPARATOR);
+                    if (settings.DECIMAL_SEPARATOR != null)
+                        _recettes = pattern.Replace(_recettes, settings.DECIMAL_SEPARATOR);
+
+                    insertCmdData.Parameters.Add(new OleDbParameter("@depenses", _depenses));
+                    insertCmdData.Parameters.Add(new OleDbParameter("@recettes", _recettes));
                     insertCmdData.ExecuteNonQuery();
                 }
 

@@ -60,6 +60,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbDecimalVirgule = new System.Windows.Forms.RadioButton();
             this.rbDecimalPoint = new System.Windows.Forms.RadioButton();
+            this.rbDecimalAuto = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.nbLblMaxLen)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -301,6 +302,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.rbDecimalAuto);
             this.groupBox1.Controls.Add(this.rbDecimalPoint);
             this.groupBox1.Controls.Add(this.rbDecimalVirgule);
             this.groupBox1.Location = new System.Drawing.Point(212, 6);
@@ -313,12 +315,10 @@
             // rbDecimalVirgule
             // 
             this.rbDecimalVirgule.AutoSize = true;
-            this.rbDecimalVirgule.Checked = true;
             this.rbDecimalVirgule.Location = new System.Drawing.Point(6, 12);
             this.rbDecimalVirgule.Name = "rbDecimalVirgule";
             this.rbDecimalVirgule.Size = new System.Drawing.Size(57, 17);
             this.rbDecimalVirgule.TabIndex = 1;
-            this.rbDecimalVirgule.TabStop = true;
             this.rbDecimalVirgule.Text = "Virgule";
             this.rbDecimalVirgule.UseVisualStyleBackColor = true;
             // 
@@ -329,9 +329,20 @@
             this.rbDecimalPoint.Name = "rbDecimalPoint";
             this.rbDecimalPoint.Size = new System.Drawing.Size(49, 17);
             this.rbDecimalPoint.TabIndex = 2;
-            this.rbDecimalPoint.TabStop = true;
             this.rbDecimalPoint.Text = "Point";
             this.rbDecimalPoint.UseVisualStyleBackColor = true;
+            // 
+            // rbDecimalAuto
+            // 
+            this.rbDecimalAuto.AutoSize = true;
+            this.rbDecimalAuto.Checked = true;
+            this.rbDecimalAuto.Location = new System.Drawing.Point(124, 12);
+            this.rbDecimalAuto.Name = "rbDecimalAuto";
+            this.rbDecimalAuto.Size = new System.Drawing.Size(103, 17);
+            this.rbDecimalAuto.TabIndex = 3;
+            this.rbDecimalAuto.TabStop = true;
+            this.rbDecimalAuto.Text = "Auto. (Windows)";
+            this.rbDecimalAuto.UseVisualStyleBackColor = true;
             // 
             // ApplicationSettingsForm
             // 
@@ -413,5 +424,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton rbDecimalPoint;
         private System.Windows.Forms.RadioButton rbDecimalVirgule;
+        private System.Windows.Forms.RadioButton rbDecimalAuto;
     }
 }

@@ -24,5 +24,6 @@ namespace BankOperationEnrichment
         public int MAX_CHAR_LIBELLE { get; set; }
         public string CPT_ATTENTE { get; set; }
         public string DECIMAL_SEPARATOR { get; set; }
+        public bool AUTO_DECIMAL_SEPARATOR { get; set; }
     }
 }

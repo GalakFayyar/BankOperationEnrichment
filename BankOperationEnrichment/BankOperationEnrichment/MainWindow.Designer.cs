@@ -53,6 +53,8 @@
             this.cbSheetName = new System.Windows.Forms.ComboBox();
             this.lblSheetName = new System.Windows.Forms.Label();
             this.gpFileType = new System.Windows.Forms.GroupBox();
+            this.rbSourceBNP = new System.Windows.Forms.RadioButton();
+            this.rbSourceCMa = new System.Windows.Forms.RadioButton();
             this.rbSourceAutre = new System.Windows.Forms.RadioButton();
             this.rbSourceCM = new System.Windows.Forms.RadioButton();
             this.rbSourceCA = new System.Windows.Forms.RadioButton();
@@ -62,8 +64,7 @@
             this.btnRefFilePath = new System.Windows.Forms.Button();
             this.lblRefFileSheet = new System.Windows.Forms.Label();
             this.lblStatut = new System.Windows.Forms.Label();
-            this.rbSourceCMa = new System.Windows.Forms.RadioButton();
-            this.rbSourceBNP = new System.Windows.Forms.RadioButton();
+            this.btnOpenExcel = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupDelimiter.SuspendLayout();
             this.gpFileType.SuspendLayout();
@@ -95,7 +96,7 @@
             // btnExecute
             // 
             this.btnExecute.Enabled = false;
-            this.btnExecute.Location = new System.Drawing.Point(301, 373);
+            this.btnExecute.Location = new System.Drawing.Point(221, 373);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(75, 23);
             this.btnExecute.TabIndex = 2;
@@ -311,6 +312,26 @@
             this.gpFileType.TabStop = false;
             this.gpFileType.Text = "Source";
             // 
+            // rbSourceBNP
+            // 
+            this.rbSourceBNP.AutoSize = true;
+            this.rbSourceBNP.Location = new System.Drawing.Point(298, 19);
+            this.rbSourceBNP.Name = "rbSourceBNP";
+            this.rbSourceBNP.Size = new System.Drawing.Size(47, 17);
+            this.rbSourceBNP.TabIndex = 4;
+            this.rbSourceBNP.Text = "BNP";
+            this.rbSourceBNP.UseVisualStyleBackColor = true;
+            // 
+            // rbSourceCMa
+            // 
+            this.rbSourceCMa.AutoSize = true;
+            this.rbSourceCMa.Location = new System.Drawing.Point(198, 19);
+            this.rbSourceCMa.Name = "rbSourceCMa";
+            this.rbSourceCMa.Size = new System.Drawing.Size(94, 17);
+            this.rbSourceCMa.TabIndex = 3;
+            this.rbSourceCMa.Text = "Crédit Maritime";
+            this.rbSourceCMa.UseVisualStyleBackColor = true;
+            // 
             // rbSourceAutre
             // 
             this.rbSourceAutre.AutoSize = true;
@@ -411,25 +432,16 @@
             this.lblStatut.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.lblStatut.Visible = false;
             // 
-            // rbSourceCMa
+            // btnOpenExcel
             // 
-            this.rbSourceCMa.AutoSize = true;
-            this.rbSourceCMa.Location = new System.Drawing.Point(198, 19);
-            this.rbSourceCMa.Name = "rbSourceCMa";
-            this.rbSourceCMa.Size = new System.Drawing.Size(94, 17);
-            this.rbSourceCMa.TabIndex = 3;
-            this.rbSourceCMa.Text = "Crédit Maritime";
-            this.rbSourceCMa.UseVisualStyleBackColor = true;
-            // 
-            // rbSourceBNP
-            // 
-            this.rbSourceBNP.AutoSize = true;
-            this.rbSourceBNP.Location = new System.Drawing.Point(298, 19);
-            this.rbSourceBNP.Name = "rbSourceBNP";
-            this.rbSourceBNP.Size = new System.Drawing.Size(47, 17);
-            this.rbSourceBNP.TabIndex = 4;
-            this.rbSourceBNP.Text = "BNP";
-            this.rbSourceBNP.UseVisualStyleBackColor = true;
+            this.btnOpenExcel.Enabled = false;
+            this.btnOpenExcel.Location = new System.Drawing.Point(302, 373);
+            this.btnOpenExcel.Name = "btnOpenExcel";
+            this.btnOpenExcel.Size = new System.Drawing.Size(74, 23);
+            this.btnOpenExcel.TabIndex = 19;
+            this.btnOpenExcel.Text = "Excel";
+            this.btnOpenExcel.UseVisualStyleBackColor = true;
+            this.btnOpenExcel.Click += new System.EventHandler(this.btnOpenExcel_Click);
             // 
             // MainWindow
             // 
@@ -437,6 +449,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(469, 406);
+            this.Controls.Add(this.btnOpenExcel);
             this.Controls.Add(this.lblStatut);
             this.Controls.Add(this.gpReference);
             this.Controls.Add(this.gpSourceFile);
@@ -509,6 +522,7 @@
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.RadioButton rbSourceBNP;
         private System.Windows.Forms.RadioButton rbSourceCMa;
+        private System.Windows.Forms.Button btnOpenExcel;
     }
 }
 

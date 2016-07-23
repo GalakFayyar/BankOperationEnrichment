@@ -37,6 +37,7 @@ namespace BankOperationEnrichment
 
         #region Private members
         private string SYSTEM_DECIMAL_SEPARATOR = CultureInfo.CurrentUICulture.NumberFormat.NumberDecimalSeparator;
+        private string resultFile;
         #endregion
 
         #region Constructor
@@ -46,7 +47,7 @@ namespace BankOperationEnrichment
             arrayData = new HashSet<Data>();
             arrayRefData = new HashSet<AccountReference>();
             InitializeComponent();
-            lblVersion.Text = "BOE v1.6.3";
+            lblVersion.Text = "BOE v1.6.4";
             txtRefFilePath.Text = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString();
 
             settingsForm = new ApplicationSettingsForm();
@@ -93,7 +94,10 @@ namespace BankOperationEnrichment
                         cbRefSheetName.Visible = false;
                     }
                     if (fileToOperate != null && fileCodeReferences != null)
+                    {
                         btnExecute.Enabled = true;
+                        btnOpenExcel.Enabled = true;
+                    }
                 }
             }
             catch
@@ -133,7 +137,10 @@ namespace BankOperationEnrichment
                     }
 
                     if (fileToOperate != null && fileCodeReferences != null)
+                    {
                         btnExecute.Enabled = true;
+                        btnOpenExcel.Enabled = true;
+                    }
                 }
             }
             catch
@@ -146,7 +153,7 @@ namespace BankOperationEnrichment
         {
             // Label status operation properties reset
             lblStatut.Visible = false;
-            lblStatut.Text = string.Format("Traitement terminé (enrichi_{0}.xls)", Path.GetFileNameWithoutExtension(fileToOperate).ToString());
+            lblStatut.Text = string.Format("Traitement terminé (Journal_{0}.xls)", Path.GetFileNameWithoutExtension(fileToOperate).ToString());
             lblStatut.ForeColor = System.Drawing.Color.Black;
 
             bool operationStatus = true;
@@ -226,6 +233,13 @@ namespace BankOperationEnrichment
             MessageBox.Show(message);
         }
 
+        private void btnOpenExcel_Click(object sender, EventArgs e)
+        {
+            Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
+            excel.Visible = true;
+            Microsoft.Office.Interop.Excel.Workbook wb = excel.Workbooks.Open(resultFile);
+        }
+
         #endregion
 
         #region Operation Functions
@@ -234,7 +248,7 @@ namespace BankOperationEnrichment
         {
             OleDbConnection connection = null;
 
-            string resultFile = string.Concat(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString(), "\\enrichi_", Path.GetFileNameWithoutExtension(fileToOperate).ToString().Replace(' ', '_'), ".xls");
+            resultFile = string.Concat(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location).ToString(), "\\Journal_", Path.GetFileNameWithoutExtension(fileToOperate).ToString().Replace(' ', '_'), ".xls");
 
             // Open connection
             string connString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " + resultFile + "; Extended Properties = 'Excel 8.0;HDR=YES'";
